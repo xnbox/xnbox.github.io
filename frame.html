@@ -90,8 +90,8 @@ h3 {
 }
 
 ::selection {
-	color: #fff;
-	background: #000;
+	color: FDB940;
+	background-color: rgba(256, 256, 256, .07);
 }
 
 .container {
@@ -200,9 +200,8 @@ button:focus {
 }
 
 code {
-	color: #fff;
+	color: #FDB940;
 	font-family: 'MonoFont';
-	background-color: rgba(256, 256, 256, .1);
 	-webkit-user-select: all;
 	user-select: all;
 	display: inline-block;
@@ -212,7 +211,8 @@ code {
 
 .tech_info {
 	font-family: 'MonoFont';
-	font-size: .8rem; display : inline-block;
+	font-size: .8rem;
+	display: inline-block;
 	box-sizing: content-box;
 	display: inline-block;
 }
@@ -268,9 +268,11 @@ a:active {
 					</h3>
 					<table width="60%">
 						<tr>
-							<td colspan="2"><div style="padding-bottom: .8rem; KKKborder: 1px solid black;">
+							<td colspan="2">
+								<div style="padding-bottom: .8rem;">
 									<a href="browse:https://xnbox.github.io"><strong><span class="orange">xn</span><span class="white">box</span></strong></a> is a single file executable container that makes it possible to launch a web app as a desktop application by providing built-in server and browser functionality.
-								</div></td>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td><li>Tech stack:&nbsp;</li></td>
@@ -299,19 +301,19 @@ a:active {
 					<table>
 						<tr>
 							<td><li>Run WAR app:</li></td>
-							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.war&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.war&nbsp;</code></td>
 						</tr>
 						<tr>
 							<td><li>Run static app packed as ZIP-archive:</li></td>
-							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.zip&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.zip&nbsp;</code></td>
 						</tr>
 						<tr>
 							<td><li>Run unpacked app (dir):</li></td>
-							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp&nbsp;</code></td>
 						</tr>
 						<tr>
 							<td><li>Run WAR (or ZIP) file from web server:</li></td>
-							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app https://mydomain.com/MyKillerApp.war&nbsp; </code></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app https://mydomain.com/MyKillerApp.war&nbsp;</code></td>
 						</tr>
 						<tr>
 							<td colspan="2"><hr style="margin: 0; margin-top: .5rem;"></td>
