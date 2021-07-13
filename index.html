@@ -1,1 +1,30 @@
-xnbox
+<!doctype html>
+<title>xnbox</title>
+<!-- 968x348 -->
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+iframe {
+	margin-top: 24px;
+	margin-left: 3px;
+}
+
+div {
+	width: 968px;
+	height: 348px;
+	background-image: url("screenshot.png");
+	box-shadow: 0 0 15px #000;
+
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+</style>
+<div>
+	<iframe src="frame.html" style="height: 320px; width: 960px;"></iframe>
+</div>

@@ -1,0 +1,364 @@
+<!doctype html>
+<!--
+MIT License
+
+Copyright (c) 2021 xnbox team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+HOME:   https://xnbox.github.io
+E-Mail: xnbox.team@outlook.com
+-->
+
+<html lang="en">
+<head>
+<link rel="manifest" href="/manifest.json">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+window {
+	width: 960px;
+	height: 320px;
+}
+</style>
+
+<!-- Bootstrap CSS -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="icon" href="favicon.png" type="image/png" />
+<title>xnbox</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+@font-face {
+	font-family: 'AppNameFont';
+	src: url('fonts/BalooTammudu2-Regular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'MonoFont';
+	src: url('fonts/RobotoMono-Regular.woff2') format('woff2');
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+}
+
+body {
+	/* 	x: 214px; */
+	/* 	y: 30px; */
+	width: 960px;
+	height: 320px;
+	background-color: #3F4C5F;
+	margin: 0;
+	padding: 0;
+	font-family: 'AppNameFont';
+}
+
+h3 {
+	font-size: 2rem;
+}
+
+::selection {
+	color: #fff;
+	background: #000;
+}
+
+.container {
+	width: 960px;
+	height: 320px;
+	min-width: 960px;
+	min-height: 320px;
+	max-width: 960px;
+	max-height: 320px;
+	display: flex; /* or inline-flex */
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	background-color: #3F4C5F;
+	color: #fff;
+}
+
+.container1 {
+	user-select: none;
+	-webkit-user-select: none;
+	justify-content: flex-end;
+	align-items: flex-end;
+	background-repeat: no-repeat;
+	background-image: url("img/bg.jpg");
+	box-shadow: inset 0 0 25px #080A0C;
+}
+
+.container23 {
+	justify-content: center;
+	align-items: center;
+	color: #ccc;
+	box-shadow: inset 0 0 25px #080A0C;
+}
+
+.container4 {
+	justify-content: center;
+	align-items: center;
+	color: #ccc;
+	user-select: none;
+	-webkit-user-select: none;
+	box-shadow: inset 0 0 25px #080A0C;
+}
+
+.pad1 {
+	height: 2.5rem;
+}
+
+.orange {
+	color: #FDB940;
+}
+
+.white {
+	color: white;
+}
+
+.gray {
+	color: #ccc;
+}
+
+.small {
+	position: absolute;
+	bottom: .5rem;
+	right: 1rem;
+	font-size: .8rem;
+}
+
+.appName {
+	font-size: 4.5rem;
+	line-height: 0;
+	padding-right: 1rem;
+}
+
+.appTitle {
+	font-size: 1.07rem;
+	line-height: 0;
+	padding-top: 2rem;
+	padding-right: 1rem;
+}
+
+.logos {
+	padding-top: 2rem;
+	padding-right: 1rem;
+}
+
+.pwaLogo {
+	display: inline;
+	width: 3.2rem;
+	margin-right: .2rem;
+}
+
+.jakartaLogo {
+	display: inline;
+	width: 8.05rem;
+}
+
+.qrcode {
+	width: 150px;
+	margin-top: -1rem;
+	margin-bottom: .7rem;
+	box-shadow: 0 0 10px 5px #2F3847;
+	border-radius: 3px;
+}
+
+button:focus {
+	outline: 0;
+}
+
+code {
+	color: #fff;
+	font-family: 'MonoFont';
+	background-color: rgba(256, 256, 256, .1);
+	-webkit-user-select: all;
+	user-select: all;
+	display: inline-block;
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.tech_info {
+	font-family: 'MonoFont';
+	font-size: .8rem; display : inline-block;
+	box-sizing: content-box;
+	display: inline-block;
+}
+
+a:link {
+	color: #ccc;
+	font-size: .97rem;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #ccc;
+}
+
+a:hover {
+	color: #fff;
+	text-decoration: underline;
+}
+
+a:active {
+	color: #fff;
+}
+</style>
+
+</head>
+<body>
+	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1" title="welcome" aria-current="true" class="active"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2" title="about"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3" title="run"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4" title="embed"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5" title="bye"></button>
+		</div>
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<div class="container container1">
+					<div class="appName">
+						<span class="orange">xn</span><span class="white"><span class="white">box</span>
+					</div>
+					<div class="appTitle">native home for web apps</div>
+					<div class="logos">
+						<img class="pwaLogo" src="img/PWA.svg" /> <img class="jakartaLogo" src="img/JakartaEE.svg" />
+					</div>
+					<div class="pad1"></div>
+					<div class="small">MIT License</div>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="container container4">
+					<h3>
+						<span class="orange">about</span>
+					</h3>
+					<table width="60%">
+						<tr>
+							<td colspan="2"><div style="padding-bottom: .8rem; KKKborder: 1px solid black;">
+									<a href="browse:https://xnbox.github.io"><strong><span class="orange">xn</span><span class="white">box</span></strong></a> is a single file executable container that makes it possible to launch a web app as a desktop application by providing built-in server and browser functionality.
+								</div></td>
+						</tr>
+						<tr>
+							<td><li>Tech stack:&nbsp;</li></td>
+							<td><span class="tech_info">PWA &bull; HTML/CSS/JavaScript &bull; JSP/Servlets</span></td>
+						</tr>
+						<tr>
+							<td><li>App containers:&nbsp;</li></td>
+							<td><span class="tech_info">WAR, ZIP, plain DIR</span></td>
+						</tr>
+						<tr>
+							<td><li>Operating systems:&nbsp;</li></td>
+							<td><span class="tech_info">Linux, macOS, Windows</span></td>
+						</tr>
+						<tr>
+							<td><li>Architectures:&nbsp;</li></td>
+							<td><span class="tech_info">x86_64, win32-x86_64, aarch64, ppc64le</span></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="container container23">
+					<h3>
+						<span class="orange">run</span>
+					</h3>
+					<table>
+						<tr>
+							<td><li>Run WAR app:</li></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.war&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td>
+						</tr>
+						<tr>
+							<td><li>Run static app packed as ZIP-archive:</li></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.zip&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td>
+						</tr>
+						<tr>
+							<td><li>Run unpacked app (dir):</li></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+						</tr>
+						<tr>
+							<td><li>Run WAR (or ZIP) file from web server:</li></td>
+							<td>&nbsp;&nbsp;<code>&nbsp;java -jar xn.jar --app https://mydomain.com/MyKillerApp.war&nbsp; </code></td>
+						</tr>
+						<tr>
+							<td colspan="2"><hr style="margin: 0; margin-top: .5rem;"></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="right"><span>more options:&nbsp;&nbsp;<a href="browse:https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="container container23">
+					<h3>
+						<span class="orange">embed</span>
+					</h3>
+					<ul>
+						<li>Option 1. Copy your app content into the <code>&nbsp;/app&nbsp;</code> directory of the <code>&nbsp;xn.jar&nbsp;</code></li>
+						<li>Option 2. Pack your app as <code>&nbsp;app.war&nbsp;</code> or <code>&nbsp;app.zip&nbsp;</code> and copy archive into the root directory of the <code>&nbsp;xn.jar&nbsp;</code></li>
+						<li>Rename the <code>&nbsp;xn.jar&nbsp;</code> to the <code>&nbsp;MyKillerApp.jar&nbsp;</code></li>
+						<li>Run your app:&nbsp;<code>&nbsp;java -jar --app MyKillerApp.jar&nbsp;</code></li>
+						<table style="width: 100%">
+							<tr>
+								<td><hr style="margin: 0; margin-top: 2rem;"></td>
+							</tr>
+							<tr>
+								<td align="right"><span>more options:&nbsp;&nbsp;<a href="browse:https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+							</tr>
+						</table>
+					</ul>
+				</div>
+			</div>
+
+			<div class="carousel-item">
+				<div class="container container4">
+					<h1>
+						<span class="white">-&nbsp;</span><span class="orange">xn</span><span class="white">box</span><span class="white">&nbsp;-</span>
+					</h1>
+					<img class="qrcode" src="img/qrcode.png"><a href="browse:https://xnbox.github.io">https://xnbox.github.io</a>
+					<div class="small">
+						<span class="gray">Built with</span>&nbsp;<span class="orange">xn</span><span class="white">box</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>
