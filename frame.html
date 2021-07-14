@@ -160,33 +160,38 @@ h3 {
 }
 
 .appName {
+	position: absolute;
+	top: 5rem;
+	right: 2rem;
 	font-size: 4.5rem;
 	line-height: 0;
-	padding-right: 1rem;
 }
 
 .appTitle {
 	font-family: 'MonoFont';
 	font-size: .7rem;
 	line-height: 0;
-	margin-top: 1.5rem;
-	margin-right: 1rem;
+	position: absolute;
+	top: 6.5rem;
+	right: 2rem;
 }
 
 .logos {
-	padding-top: 2rem;
+	visibility: hidden;
+	padding-top : 2rem;
 	padding-right: 1rem;
+	padding-top: 2rem;
 }
 
 .pwaLogo {
 	display: inline;
-	width: 3.2rem;
+	width: 2rem;
 	margin-right: .2rem;
 }
 
 .jakartaLogo {
 	display: inline;
-	width: 8.05rem;
+	width: 5rem;
 }
 
 .qrcode {
@@ -238,12 +243,11 @@ a:hover {
 a:active {
 	color: #fff;
 }
-
 </style>
 
 </head>
 <body>
-	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false" data-bs-keyboard="true">
 		<div class="carousel-indicators">
 			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1" title="welcome" aria-current="true" class="active"></button>
 			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2" title="about"></button>
@@ -293,12 +297,12 @@ a:active {
 						</tr>
 					</table>
 					<table style="width: 94%; position: absolute; bottom: 2rem;">
-							<tr>
-								<td><hr style="margin-bottom: .2rem;"></td>
-							</tr>
-							<tr>
-								<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-							</tr>
+						<tr>
+							<td><hr style="margin-bottom: .2rem;"></td>
+						</tr>
+						<tr>
+							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+						</tr>
 					</table>
 				</div>
 			</div>
@@ -309,19 +313,20 @@ a:active {
 						<span class="orange">features</span>
 					</h3>
 					<ul>
-						<li>Full access to all native OS features with standard APIs of Java and JavaScript</li>
 						<li>Single cross-platform executable jar file (starts from ~25Mb) with no dependencies</li>
-						<li>Custom command-line args</li>
-						<li>Multiple display modes (in-window, in-browser, fullscreen, headless)</li>
-						<li>Supports client-less (pure backend) apps</li>
+						<li>Full access to native OS through Java and server-side JavaScript</li>
+						<li>Respects the standard PWA webmanifest</li>
+						<li>Supports command-line args</li>
+						<li>Configurable display modes (in-window, in-browser, fullscreen, headless)</li>
+						<li>Also supports backend (client-less) apps</li>
 					</ul>
 					<table style="width: 94%; position: absolute; bottom: 2rem;">
-							<tr>
-								<td><hr style="margin-bottom: .2rem;"></td>
-							</tr>
-							<tr>
-								<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-							</tr>
+						<tr>
+							<td><hr style="margin-bottom: .2rem;"></td>
+						</tr>
+						<tr>
+							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+						</tr>
 					</table>
 				</div>
 			</div>
@@ -350,12 +355,12 @@ a:active {
 						</tr>
 					</table>
 					<table style="width: 94%; position: absolute; bottom: 2rem;">
-							<tr>
-								<td><hr style="margin-bottom: .2rem;"></td>
-							</tr>
-							<tr>
-								<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-							</tr>
+						<tr>
+							<td><hr style="margin-bottom: .2rem;"></td>
+						</tr>
+						<tr>
+							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+						</tr>
 					</table>
 				</div>
 			</div>
@@ -365,18 +370,22 @@ a:active {
 						<span class="orange">embed app</span>
 					</h3>
 					<ul>
-						<li>Option 1. &nbsp;Copy your app content into the &nbsp;<code>/app</code>&nbsp; directory of the &nbsp;<code>xn.jar</code>&nbsp;</li>
-						<li>Option 2. &nbsp;Pack your app as &nbsp;<code>app.war</code>&nbsp; or &nbsp;<code>app.zip</code>&nbsp; and copy archive to the root directory of the &nbsp;<code>xn.jar</code>&nbsp;</li>
-						<li>Rename the &nbsp;<code>xn.jar</code>&nbsp; to the &nbsp;<code>MyKillerApp.jar</code>&nbsp;</li>
-						<li>Run your app:&nbsp;<code>java -jar --app MyKillerApp.jar</code>&nbsp;</li>
+						<li>Option 1. &nbsp;Copy your app content into the &nbsp;<code>/app</code>&nbsp; directory of the &nbsp;<code>xn.jar</code>&nbsp;
+						</li>
+						<li>Option 2. &nbsp;Pack your app as &nbsp;<code>app.war</code>&nbsp; or &nbsp;<code>app.zip</code>&nbsp; and copy archive to the root directory of the &nbsp;<code>xn.jar</code>&nbsp;
+						</li>
+						<li>Rename the &nbsp;<code>xn.jar</code>&nbsp; to the &nbsp;<code>MyKillerApp.jar</code>&nbsp;
+						</li>
+						<li>Run your app:&nbsp;<code>java -jar --app MyKillerApp.jar</code>&nbsp;
+						</li>
 					</ul>
 					<table style="width: 94%; position: absolute; bottom: 2rem;">
-							<tr>
-								<td><hr style="margin-bottom: .2rem;"></td>
-							</tr>
-							<tr>
-								<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-							</tr>
+						<tr>
+							<td><hr style="margin-bottom: .2rem;"></td>
+						</tr>
+						<tr>
+							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+						</tr>
 					</table>
 				</div>
 			</div>
@@ -393,9 +402,29 @@ a:active {
 				</div>
 			</div>
 		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" style="left: -2rem;">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next" style="right: -2rem;">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="visually-hidden">Next</span>
+		</button>
 	</div>
 
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		document.addEventListener('keydown', function(e) {
+	        if (e.keyCode === 37) {
+		        // Previous
+		        $(".carousel-control.left").click();
+		        return false;
+	        }
+	        if (e.keyCode === 39) {
+		        // Next
+		        $(".carousel-control.right").click();
+		        return false;
+	        }
+        })
+	</script>
 
 </body>
 </html>
