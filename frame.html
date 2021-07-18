@@ -165,11 +165,12 @@ h3 {
 	right: 2rem;
 	font-size: 4.5rem;
 	line-height: 0;
+	text-decoration: overline;
 }
 
 .appTitle {
 	font-family: 'MonoFont';
-	font-size: .7rem;
+	font-size: .8rem;
 	line-height: 0;
 	position: absolute;
 	top: 6.5rem;
@@ -206,33 +207,22 @@ button:focus {
 	outline: 0;
 }
 
-code {
-	color: #fff;
-	font-family: 'MonoFont';
-	font-size: .86rem;
-	-webkit-user-select: all;
-	user-select: all;
-	display: inline-block;
-	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
-}
-
 .tech_info {
 	font-family: 'MonoFont';
-	font-size: .8rem;
+	font-size: .87rem;
 	display: inline-block;
 	box-sizing: content-box;
 	display: inline-block;
 }
 
 a:link {
-	color: #ccc;
+	color: #fff;
 	font-size: .97rem;
 	text-decoration: none;
 }
 
 a:visited {
-	color: #ccc;
+	color: #fff;
 }
 
 a:hover {
@@ -251,10 +241,7 @@ a:active {
 		<div class="carousel-indicators">
 			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1" title="welcome" aria-current="true" class="active"></button>
 			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2" title="about"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3" title="features"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4" title="run app"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5" title="embed app"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6" title="bye"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3" title="bye"></button>
 		</div>
 		<div class="carousel-inner">
 			<div class="carousel-item active">
@@ -262,7 +249,7 @@ a:active {
 					<div class="appName">
 						<span class="orange">xn</span><span class="white"><span class="white">box</span>
 					</div>
-					<div class="appTitle">v2.14</div>
+					<div class="appTitle">v2.14.1</div>
 					<div class="logos">
 						<img class="pwaLogo" src="img/PWA.svg" /> <img class="jakartaLogo" src="img/JakartaEE.svg" />
 					</div>
@@ -279,13 +266,9 @@ a:active {
 						<tr>
 							<td colspan="2">
 								<div style="padding-bottom: 1rem;">
-									<a href="https://xnbox.github.io"><strong><span class="orange">xn</span><span class="white">box</span></strong></a> is a single file executable container that makes it possible to launch a web app as a desktop application by providing built-in server and browser functionality.
+									<a href="https://xnbox.github.io"><strong><span class="orange">xn</span><span class="white">box</span></strong></a> is a standalone executable container that makes it possible to launch a static and dynamic web apps on a desktop by providing built-in server and browser functionality.
 								</div>
 							</td>
-						</tr>
-						<tr>
-							<td><li>Tech stack:&nbsp;</li></td>
-							<td><span class="tech_info">PWA &bull; HTML/CSS/JavaScript &bull; JSP/Servlets</span></td>
 						</tr>
 						<tr>
 							<td><li>Operating systems:&nbsp;</li></td>
@@ -301,90 +284,7 @@ a:active {
 							<td><hr style="margin-bottom: .2rem;"></td>
 						</tr>
 						<tr>
-							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-
-			<div class="carousel-item">
-				<div class="container container4">
-					<h3>
-						<span class="orange">features</span>
-					</h3>
-					<ul>
-						<li>Single cross-platform executable jar file (starts from ~25Mb) with command-line args support</li>
-						<li>Access to native OS (Java and server-side JavaScript)</li>
-						<li>Respects the <abbr title="Web application ARchive">WAR</abbr> and the <abbr title="Progressive Web Apps">PWA</abbr> webmanifest specifications
-						</li>
-						<li>Configurable display modes (in-window, in-browser, fullscreen, headless)</li>
-						<li>Also supports backend (client-less) apps</li>
-					</ul>
-					<table style="width: 94%; position: absolute; bottom: 2rem;">
-						<tr>
-							<td><hr style="margin-bottom: .2rem;"></td>
-						</tr>
-						<tr>
-							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-
-			<div class="carousel-item">
-				<div class="container container23">
-					<h3>
-						<span class="orange">run app</span>
-					</h3>
-					<table>
-						<tr>
-							<td><li>Run WAR:</li></td>
-							<td>&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.war&nbsp;</code></td>
-						</tr>
-						<tr>
-							<td><li>Run static app packed as ZIP archive:</li></td>
-							<td>&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerApp.zip&nbsp;</code></td>
-						</tr>
-						<tr>
-							<td><li>Run app from directory:</li></td>
-							<td>&nbsp;<code>&nbsp;java -jar xn.jar --app MyKillerAppDir&nbsp;</code></td>
-						</tr>
-						<tr>
-							<td><li>Run WAR (or ZIP) file from web server:</li></td>
-							<td>&nbsp;<code>&nbsp;java -jar xn.jar --app https://mydomain.com/MyKillerApp.war&nbsp;</code></td>
-						</tr>
-					</table>
-					<table style="width: 94%; position: absolute; bottom: 2rem;">
-						<tr>
-							<td><hr style="margin-bottom: .2rem;"></td>
-						</tr>
-						<tr>
-							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<div class="carousel-item">
-				<div class="container container23">
-					<h3>
-						<span class="orange">embed app</span>
-					</h3>
-					<ul>
-						<li>Option 1. &nbsp;Copy your app content into the &nbsp;<code>/app</code>&nbsp; directory of the &nbsp;<code>xn.jar</code>&nbsp;
-						</li>
-						<li>Option 2. &nbsp;Pack your app as &nbsp;<code>app.war</code>&nbsp; or &nbsp;<code>app.zip</code>&nbsp; and copy archive to the root directory of the &nbsp;<code>xn.jar</code>&nbsp;
-						</li>
-						<li>Rename the &nbsp;<code>xn.jar</code>&nbsp; to the &nbsp;<code>MyKillerApp.jar</code>&nbsp;
-						</li>
-						<li>Run your app:&nbsp;<code>java -jar --app MyKillerApp.jar</code>&nbsp;
-						</li>
-					</ul>
-					<table style="width: 94%; position: absolute; bottom: 2rem;">
-						<tr>
-							<td><hr style="margin-bottom: .2rem;"></td>
-						</tr>
-						<tr>
-							<td align="right"><span>more options:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
+							<td align="right"><span>see more:&nbsp;&nbsp;<a href="https://xnbox.github.io">https://xnbox.github.io</a></span></td>
 						</tr>
 					</table>
 				</div>
