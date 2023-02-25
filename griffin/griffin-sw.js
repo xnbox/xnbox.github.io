@@ -31,7 +31,7 @@ E-Mail: xnbox.team@outlook.com
 const CACHE_NAME_PREF = 'griffin-';
 const CACHE_NAME = CACHE_NAME_PREF + '1.01.01';
 
-const INDEX_URL = '/griffin.html'
+const INDEX_URL = '/griffin/griffin.html'
 
 self.addEventListener("install", function(event) {
     event.waitUntil(
