@@ -3674,21 +3674,42 @@ async function fetchAsUint8Array(url, authorization) {
 	.then((response) => {
 		if (response.status >= 400) {
 			console.log(`WARNING! Remote key ignored. Bad HTTP status`);
-			return new ArrayBuffer(0);
+			return '';
 		}
-		return response.arrayBuffer();
-	})
-	.then((arrayBuffer) => {
-		return new Uint8Array(arrayBuffer);
-	})
-	.then((uint8Array) => {
-		return new TextDecoder().decode(uint8Array);
+		return response.text();
 	})
 	.catch(error => {
 		console.log(`WARNING! Remote key ignored. ${error.message}`);
 		return '';
 	});
 }
+
+// async function fetchAsUint8Array(url, authorization) {
+// 	return fetch(url, {
+// 		method: 'GET',
+// 		headers: {
+// 			'Authorization': authorization
+// 		},
+// 		cache: 'no-store'
+// 	})
+// 	.then((response) => {
+// 		if (response.status >= 400) {
+// 			console.log(`WARNING! Remote key ignored. Bad HTTP status`);
+// 			return new ArrayBuffer(0);
+// 		}
+// 		return response.arrayBuffer();
+// 	})
+// 	.then((arrayBuffer) => {
+// 		return new Uint8Array(arrayBuffer);
+// 	})
+// 	.then((uint8Array) => {
+// 		return new TextDecoder().decode(uint8Array);
+// 	})
+// 	.catch(error => {
+// 		console.log(`WARNING! Remote key ignored. ${error.message}`);
+// 		return '';
+// 	});
+// }
 
 async function fetchLog(url, eventName) {
 	return fetch(url, {
@@ -3705,6 +3726,59 @@ async function fetchLog(url, eventName) {
 	})
 	.catch(error => {
 		console.log(`WARNING! Logging problem. ${error.message}`);
+	});
+}
+
+/*
+ * Events:
+ *
+ * open
+ * login-ok
+ * login-error
+ */
+async function fetchLog(url, options) {
+	options['cache'] = 'no-store';
+	return fetch(url, options)
+	.then((response) => {
+		if (response.status >= 400)
+			console.log(`WARNING! Logging problem. Bad HTTP status`);
+	})
+	.catch(error => {
+		console.log(`WARNING! Logging problem. ${error.message}`);
+	});
+}
+
+async function fetchRemoteSecret(url, options) {
+	options['cache'] = 'no-store';
+	return fetch(url, options)
+	.then((response) => {
+		if (response.status >= 400) {
+			console.log(`WARNING! Remote key ignored. Bad HTTP status`);
+			return '';
+		}
+		return response.text();
+	})
+	.catch(error => {
+		console.log(`WARNING! Remote key ignored. ${error.message}`);
+		return '';
+	});
+}
+
+async function fetchDisableUserProfile(url, options) {
+	options['cache'] = 'no-store';
+	return fetch(url, options)
+	.then((response) => {
+		if (response.status >= 400) {
+			console.log(`WARNING! Profile is not blocked. Bad HTTP status`);
+			return false;
+		} else {
+			console.log(`Access is blocked successfully`);
+			return true;
+		}
+	})
+	.catch(error => {
+		console.log(`WARNING! Error while blocking. ${error.message}`);
+		return false;
 	});
 }
 
@@ -3809,35 +3883,66 @@ function parseXml(s) {
 		}
 
 	    xpathResult = xml.evaluate('wallet/users/*', xml, nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
-	    while (node = xpathResult.iterateNext()) {
-	    	  const attributes = {};
-	    	  for (const childNode of node.childNodes) {
-	    		  if (childNode.nodeName != 'attributes')
-	    			  continue;
-	    		  const attributesNode = childNode;
-	    		  for (const attributeNode of attributesNode.childNodes) {
-	    			  if (attributeNode.nodeName != 'attribute')
-	    				  continue;
-	    			  const id = attributeNode.getAttribute('id');
-	    			  const value = attributeNode.getAttribute('value');
-	    			  attributes[id] = value;
-	    		  }
-	    	  }
-	    	  const username = node.getAttribute('username');
-	    	  const obj = {};
-	    	  json.users[username] = obj;
-	    	  obj['attributes'] = attributesValuesToString(json.config.attributes, attributes);
-	    	  obj['password'] = node.getAttribute('password');
-	    	  obj['remoteBlockPassword'] = node.getAttribute('remoteBlockPassword');
-	    	  obj['hash'] = node.getAttribute('hash');
-	    	  obj['reg'] = node.getAttribute('reg');
-	    	  obj['ip'] = node.getAttribute('ip');
-	    	  obj['remoteUrl'] = node.getAttribute('remoteUrl');
-	    	  obj['remoteAuthorization'] = node.getAttribute('remoteAuthorization');
-	    	  obj['remoteSecret'] = node.getAttribute('remoteSecret');
-			  obj['sessionTimeoutSec'] = parsePositiveInt(node.getAttribute('sessionTimeoutSec'));
-			  obj['sessionTimeoutWarningSec'] = parsePositiveInt(node.getAttribute('sessionTimeoutWarningSec'));
-	    }
+		while (node = xpathResult.iterateNext()) {
+// 			let remoteOptions = null;
+// 			for (const childNode of node.childNodes) {
+// 				if (childNode.nodeName == 'remoteOptions') {
+// 					remoteOptions = JSON.parse(childNode.textContent.trim());
+// 					break;
+// 				}
+// 			}
+
+			let requestUrl = null;
+			const remoteOptions = {};
+			for (const childNode of node.childNodes) {
+				if (childNode.nodeName == 'request') {
+					const requestNode = childNode;
+					requestUrl = requestNode.getAttribute('url');
+					for (const optionsNode of requestNode.childNodes) {
+						if (optionsNode.nodeName == 'options') {
+							let options;
+							const optionsStr = optionsNode.textContent.trim();
+							if (optionsStr == '')
+								options = {};
+							else
+								options = JSON.parse(optionsStr);
+							const requestAction = optionsNode.getAttribute('action');
+							remoteOptions[requestAction] = options;
+						}
+					}
+				}
+			}
+
+			const attributes = {};
+			for (const childNode of node.childNodes) {
+				if (childNode.nodeName != 'attributes')
+					continue;
+					const attributesNode = childNode;
+					for (const attributeNode of attributesNode.childNodes) {
+						if (attributeNode.nodeName != 'attribute')
+							continue;
+						const id = attributeNode.getAttribute('id');
+						const value = attributeNode.getAttribute('value');
+						attributes[id] = value;
+				  }
+			}
+			const username = node.getAttribute('username');
+			const obj = {};
+			json.users[username] = obj;
+			obj['attributes'] = attributesValuesToString(json.config.attributes, attributes);
+			obj['password'] = node.getAttribute('password');
+			obj['remoteBlockPassword'] = node.getAttribute('remoteBlockPassword');
+			obj['hash'] = node.getAttribute('hash');
+			obj['reg'] = node.getAttribute('reg');
+			obj['ip'] = node.getAttribute('ip');
+			//obj['remoteUrl'] = node.getAttribute('remoteUrl');
+			obj['remoteUrl'] = requestUrl;
+			obj['remoteAuthorization'] = node.getAttribute('remoteAuthorization');
+			obj['remoteOptions'] = remoteOptions;
+			obj['remoteSecret'] = node.getAttribute('remoteSecret');
+			obj['sessionTimeoutSec'] = parsePositiveInt(node.getAttribute('sessionTimeoutSec'));
+			obj['sessionTimeoutWarningSec'] = parsePositiveInt(node.getAttribute('sessionTimeoutWarningSec'));
+		}
 		//
 	    xpathResult = xml.evaluate('wallet/resources/*', xml, nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 	    while (node = xpathResult.iterateNext()) {
@@ -4110,12 +4215,14 @@ async function generateEncryptedJson(json) {
         const remoteSecret = userObj['remoteSecret'];
         const remoteUrl = userObj['remoteUrl'];
         const remoteAuthorization = userObj['remoteAuthorization'];
+        const remoteOptions = userObj['remoteOptions'];
         const sessionTimeoutSec	    	= userObj['sessionTimeoutSec'];
        	const sessionTimeoutWarningSec  = userObj['sessionTimeoutWarningSec'];
 		//
         const remoteObj = {
 							remoteUrl: remoteUrl,
-							remoteAuthorization: remoteAuthorization
+							remoteAuthorization: remoteAuthorization,
+							remoteOptions: remoteOptions
 							};
         const remoteObjStr = JSON.stringify(remoteObj);
 		//
@@ -4217,7 +4324,8 @@ async function extractPrivateData(encryptedJson, userName, userPassword, userAtt
     let remoteSecret;
     if (remoteObjStr !== null) {
     	remoteObj = JSON.parse(remoteObjStr);
-    	remoteSecret = await fetchAsUint8Array(remoteObj.remoteUrl, remoteObj.remoteAuthorization);
+    	//remoteSecret = await fetchAsUint8Array(remoteObj.remoteUrl, remoteObj.remoteAuthorization);
+    	remoteSecret = await fetchRemoteSecret(remoteObj.remoteUrl, remoteObj.remoteOptions['get-remote-secret']);
     }
 	//
     const passwordRemote = buildPassword(userName, userPassword, userAttributes, userHash, userRegCode, checkedIp, remoteSecret);
@@ -4418,10 +4526,6 @@ function createResourceElement(resourceId, resource) {
 async function dataToHtml(el, data) {
 	if (data.startsWith('<')) {
 		el.innerHTML = '<div>' + data + '</div>';
-// 		const timeout = setTimeout(() => {
-// 			el.parentElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-// 			clearTimeout(timeout);
-// 		}, 100);
 	} else if (data.startsWith('https://') || data.startsWith('http://') || data.startsWith('mailto:') || data.startsWith('tel:')) {
 		const rootEl = document.createElement('div');
 		rootEl.classList.add('res-content-root');
@@ -4438,19 +4542,8 @@ async function dataToHtml(el, data) {
 		borderedSpacForQrCodeEl.classList.add('bordered-space');
 		borderedSpacForQrCodeEl.appendChild(qrCodeEl);
 		rootEl.appendChild(borderedSpacForQrCodeEl);
-
-// 		const timeout = setTimeout(() => {
-// 			el.parentElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-// 			clearTimeout(timeout);
-// 		}, 100);
 	} else if (data.startsWith('data:image/')) {
 		el.innerHTML = '<img src="' + data + '">';
-// 		const timeout = setTimeout(() => {
-// 			//if (el.parentElement != el.parentElement.parentElement.firstChild)
-// 			//el.parentElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-// 			el.parentElement.scroll({behavior: 'smooth', top: 0, left: 0});
-// 			clearTimeout(timeout);
-// 		}, 100);
 	} else if (data.startsWith('otpauth://totp/')) {
     	const promise = getTotpCode(data);
 		promise.then((code) => {
@@ -4502,15 +4595,9 @@ async function dataToHtml(el, data) {
 			checkboxHolderEl.classList.add('label');
 			checkboxLabelEl.innerHTML = 'Show otpauth URI';
 			checkboxHolderEl.appendChild(checkboxLabelEl);
-
-//			el.parentElement.scrollIntoView({behavior: 'smooth', block: 'start'});
 		});
 	} else {
 		el.innerHTML = '<pre>' + data + '</pre>';
-// 		const timeout = setTimeout(() => {
-// 			el.parentElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-// 			clearTimeout(timeout);
-// 		}, 100);
 	}
 }
 
