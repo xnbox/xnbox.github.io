@@ -28,48 +28,49 @@ E-Mail: xnbox.team@outlook.com
 'use strict';
 
 // https://www.emakina.com/int-en/news/blog/post/offline-first-with-progressive-web-apps-caching-strategies-part-2-3
-//const CACHE_NAME_PREF = 'griffin-';
-//const CACHE_NAME = CACHE_NAME_PREF + '1.01.01';
-//
+//const CACHE_NAME_PREFIX = 'griffin-';
+//const PRODUCT_VERSION = '1.01.01';
 //const INDEX_URL = '/griffin/griffin.html'
 
+const CACHE_NAME = CACHE_NAME_PREFIX + PRODUCT_VERSION;
+
 self.addEventListener("install", function(event) {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(function(cache) {
-            return cache.add(INDEX_URL);
+	event.waitUntil(
+		caches.open(CACHE_NAME).then(function(cache) {
+			return cache.add(INDEX_URL);
 
-        }).catch((err) => {
-            console.error(err);
-            return new Promise((resolve, reject) => {
-                reject('ERROR: ' + err);
-            });
-        })
-    );
+		}).catch((err) => {
+			console.error(err);
+			return new Promise((resolve, reject) => {
+				reject('ERROR: ' + err);
+			});
+		})
+	);
 });
 
-self.addEventListener("fetch", function (event) {
-    const requestURL = new URL(event.request.url);
+self.addEventListener("fetch", function(event) {
+	const requestURL = new URL(event.request.url);
 
-    if (requestURL.pathname === '/') {
-      event.respondWith(getByNetworkFallingBackByCache(INDEX_URL));
-    } else if (INDEX_URL == requestURL.href ||
-        INDEX_URL == requestURL.pathname) {
-        event.respondWith(getByNetworkFallingBackByCache(event.request));
-    }
+	if (requestURL.pathname === '/') {
+		event.respondWith(getByNetworkFallingBackByCache(INDEX_URL));
+	} else if (INDEX_URL == requestURL.href ||
+		INDEX_URL == requestURL.pathname) {
+		event.respondWith(getByNetworkFallingBackByCache(event.request));
+	}
 });
 
-self.addEventListener("activate", function (event) {
-    event.waitUntil(
-        caches.keys().then(function (cacheNames) {
-            return Promise.all(
-                cacheNames.map(function (cacheName) {
-                    if (CACHE_NAME !== cacheName && cacheName.startsWith(CACHE_NAME_PREF)) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
+self.addEventListener("activate", function(event) {
+	event.waitUntil(
+		caches.keys().then(function(cacheNames) {
+			return Promise.all(
+				cacheNames.map(function(cacheName) {
+					if (CACHE_NAME !== cacheName && cacheName.startsWith(CACHE_NAME_PREFIX)) {
+						return caches.delete(cacheName);
+					}
+				})
+			);
+		})
+	);
 });
 
 /**
@@ -82,18 +83,18 @@ self.addEventListener("activate", function (event) {
  * @returns Promise
  */
 const getByNetworkFallingBackByCache = (request, showAlert = false) => {
-    return caches.open(CACHE_NAME).then((cache) => {
-        return fetch(request).then((networkResponse) => {
-            cache.put(request, networkResponse.clone());
-            return networkResponse;
-        }).catch(() => {
-            if (showAlert) {
-                alert('You are in offline mode. The data may be outdated.')
-            }
+	return caches.open(CACHE_NAME).then((cache) => {
+		return fetch(request).then((networkResponse) => {
+			cache.put(request, networkResponse.clone());
+			return networkResponse;
+		}).catch(() => {
+			if (showAlert) {
+				alert('You are in offline mode. The data may be outdated.')
+			}
 
-            return caches.match(request);
-        });
-    });
+			return caches.match(request);
+		});
+	});
 };
 
 /**
@@ -103,9 +104,9 @@ const getByNetworkFallingBackByCache = (request, showAlert = false) => {
  * @returns Promise
  */
 const getByCacheOnly = (request) => {
-    return caches.open(CACHE_NAME).then((cache) => {
-        return cache.match(request).then((response) => {
-            return response;
-        });
-    });
+	return caches.open(CACHE_NAME).then((cache) => {
+		return cache.match(request).then((response) => {
+			return response;
+		});
+	});
 };
