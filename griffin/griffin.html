@@ -36,7 +36,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="sha256" content="">
 <meta name="signature" content="">
-<meta name="software_version" content="1.01.01">
+<meta name="product-version" content="1.01.01">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
 
@@ -4739,7 +4739,7 @@ async function displayWallet() {
 
 	mnuAbout.addEventListener('click', (e)=> {
 		logo.src = icon_144x144_data_url;
-		tdVersion.innerHTML = version;
+		tdVersion.innerHTML = PRODUCT_VERSION;
 		tdUuid.innerHTML = uuid;
 		tdSha256.innerHTML = sha256.substring(0, 36) + '‏‏‎<br>‎' + sha256.substring(36);
 		tdSize.innerHTML = size;
@@ -5029,7 +5029,7 @@ window.addEventListener('previous', function(){
 const headEl = document.querySelector('head');
 const metaSha256El = headEl.querySelector('meta[name="sha256"]');
 const metaSignatureEl = headEl.querySelector('meta[name="signature"]');
-const metaSoftwareVersionEl = headEl.querySelector('meta[name="software_version"]');
+const metaSoftwareVersionEl = headEl.querySelector('meta[name="product-version"]');
 const metaContainerUuidEl = headEl.querySelector('meta[name="uuid"]');
 const metaEncryptedDataSizeEl = headEl.querySelector('meta[name="size"]');
 
@@ -5066,10 +5066,6 @@ digestMessage(getHTML()).then(digest => {
 	//restore
 	metaSha256El.setAttribute('content', savedDigest);
 });
-
-const CACHE_NAME_PREFIX = 'griffin-';
-const PRODUCT_VERSION = '1.01.01';
-const INDEX_URL = '/griffin/griffin.html'
 
 if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 	if('serviceWorker' in navigator)
@@ -5223,7 +5219,7 @@ const ID_LENGTH = 12;
 const KEY_LENGTH = 18;
 const STANDARD_KEY = new Uint8Array(KEY_LENGTH);
 const uuid = metaContainerUuidEl.getAttribute('content');
-const version = metaSoftwareVersionEl.getAttribute('content');
+const PRODUCT_VERSION = metaSoftwareVersionEl.getAttribute('content');
 const encryptedJsonStr = jsonHolder.textContent;
 const encryptedJson = JSON.parse(encryptedJsonStr);
 const config = encryptedJson['config'];

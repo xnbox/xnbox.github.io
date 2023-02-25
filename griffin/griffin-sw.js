@@ -28,9 +28,10 @@ E-Mail: xnbox.team@outlook.com
 'use strict';
 
 // https://www.emakina.com/int-en/news/blog/post/offline-first-with-progressive-web-apps-caching-strategies-part-2-3
-//const CACHE_NAME_PREFIX = 'griffin-';
-//const PRODUCT_VERSION = '1.01.01';
-//const INDEX_URL = '/griffin/griffin.html'
+
+const CACHE_NAME_PREFIX = 'griffin-';
+const PRODUCT_VERSION = '1.01.01';
+const INDEX_URL = '/griffin/griffin.html'
 
 const CACHE_NAME = CACHE_NAME_PREFIX + PRODUCT_VERSION;
 
