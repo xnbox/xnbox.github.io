@@ -5073,6 +5073,11 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 
 const PRODUCT_NAME = "Griffin";
 const icon_144x144_data_url = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
+
+const CACHE_NAME_PREF = 'griffin-';
+const CACHE_NAME = CACHE_NAME_PREF + '1.01.01';
+const INDEX_URL = '/griffin/griffin.html'
+
 //let href = 'http://127.0.0.1:8888/griffin.html';
 let href = 'https://xnbox.github.io/griffin/griffin.html';
 let manifest = {
