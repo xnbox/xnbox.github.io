@@ -5194,6 +5194,10 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 function setManifest(start_url, name, description, icon_data_url) {
+	const ind1 = icon_data_url.indexOf(':');
+	const ind2 = icon_data_url.indexOf(';');
+	const type = icon_data_url.substring(ind1 + 1, ind2)
+
 	let manifest = {
 			"name" : encodeURIComponent(name),
 			"short_name" : encodeURIComponent(name),
@@ -5204,7 +5208,8 @@ function setManifest(start_url, name, description, icon_data_url) {
 			"background_color" : "White",
 			"icons" : [{
 				"src" : encodeURI(icon_data_url),
-				"sizes" : "144x144"
+				"sizes" : "144x144",
+				"type" : type
 			}]
 		};
 	let manifestStr = JSON.stringify(manifest);
