@@ -965,7 +965,7 @@ Cyber Griffin Silhouette (optimized)
 								<a id="mnuCreateEmptyWallet" class="menu-item">Create empty wallet</a>
 								<a id="mnuCreateWalletFromSource" class="menu-item">Create wallet from source…</a>
 								<div class="menu-separator"></div>
-								<a id="mnuInstall" class="menu-item menu-item-disabled">Install…</a>
+								<a id="mnuInstall" class="menu-item menu-item-disabled" style="display: none;">Install…</a>
 								<div class="menu-separator"></div>
 								<a id="mnuRegister" class="menu-item">Register…</a>
 								<a id="mnuUnregister" class="menu-item">Unregister…</a>
@@ -4061,6 +4061,7 @@ async function generate(xml, empty, download) {
 		integrityTestErrorMessage.style.display = 'none';
 		statusMessageMargin.style.display = 'none';
 		btnSignIn.style.display = empty ? 'none' : 'flex';
+		mnuInstall.style.display = empty ? 'block' : 'none';
 		document.title = '';
 		userComponent.style.display = 'none';
 		userNameText.textContent = '';
@@ -4094,6 +4095,7 @@ async function generate(xml, empty, download) {
 			if (download)
 				downloadAsHtmlFile(fileName, getHTML());
 			// restore
+			mnuInstall.style.display = WAS_EMPTY ? 'block' : 'none';
 			integrityTestErrorMessage.style.display = savedShowIntegrityTestErrorMessage ? 'block' : 'none';
 			appName.textContent = savedAppName;
 			metaContainerUuidEl.setAttribute('content', savedUuid);
@@ -4700,19 +4702,6 @@ async function displayWallet() {
 	let description;
 	let icon_data_url;
 
-	if (WAS_EMPTY) {
-		start_url = 'https://xnbox.github.io/griffin/griffin.html';
-		name = PRODUCT_NAME;
-		description = PRODUCT_NAME;
-		icon_data_url = icon_144x144_data_url;
-	} else {
-		start_url = 'https://xnbox.github.io/griffin/griffin.html';
-		name = config.title;
-		description = config.title;
-		icon_data_url = config.favicon;
-	}
-	setManifest(start_url, name, description, icon_data_url);
-
     let stunUrls = config['stunUrls'];
     let ip = '';
 	if (stunUrls !== undefined && stunUrls.length != 0)
@@ -4824,10 +4813,13 @@ async function displayWallet() {
 		menuLeft.style.display = 'none';
 	});
 
-	mnuInstall.addEventListener('click', e => {
-		if (!mnuInstall.classList.contains('menu-item-disabled'))
-			install();
-	});
+	if (WAS_EMPTY) {
+		mnuInstall.style.display = 'block';
+		mnuInstall.addEventListener('click', e => {
+			if (!mnuInstall.classList.contains('menu-item-disabled'))
+				install();
+		});
+	}
 
 	mnuAbout.addEventListener('click', (e)=> {
 		logo.src = icon_144x144_data_url;
@@ -5166,38 +5158,11 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 const PRODUCT_NAME = "Griffin";
 const icon_144x144_data_url = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
 
-// let start_url = 'https://xnbox.github.io/griffin/griffin.html';
-// let name = PRODUCT_NAME;
-// let description = PRODUCT_NAME;
-// let icon_data_url = icon_144x144_data_url;
-//setManifest(start_url, name, description, icon_data_url);
-
-// let href = 'https://xnbox.github.io/griffin/griffin.html';
-// let manifest = {
-// 		"name" : encodeURIComponent(PRODUCT_NAME),
-// 		"short_name" : encodeURIComponent(PRODUCT_NAME),
-// 		//"start_url" : encodeURI(window.location.href),
-// 		"start_url" : encodeURI(href),
-// 		"description" : encodeURIComponent(PRODUCT_NAME),
-// 		"display" : "standalone",
-// 		"theme_color" : "DeepSkyBlue",
-// 		"background_color" : "White",
-// 		"icons" : [{
-// 			"src" : encodeURI(icon_144x144_data_url),
-// 			"sizes" : "144x144",
-// 			"type" : "image/svg+xml"
-// 		}]
-// 	};
-// let manifestStr = JSON.stringify(manifest);
-// let hrefManifest = 'data:application/manifest+json,' + manifestStr;
-
-// let linkManifestEl = headEl.querySelector('link[rel="manifest"]');
-// if (linkManifestEl != null)
-// 	headEl.removeChild(linkManifestEl);
-// linkManifestEl = document.createElement('link');
-// linkManifestEl.setAttribute('rel', 'manifest');
-// linkManifestEl.setAttribute('href', hrefManifest);
-// headEl.appendChild(linkManifestEl);
+let start_url = 'https://xnbox.github.io/griffin/griffin.html';
+let name = PRODUCT_NAME;
+let description = PRODUCT_NAME;
+let icon_data_url = icon_144x144_data_url;
+setManifest(start_url, name, description, icon_data_url);
 
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -5228,7 +5193,17 @@ function setManifest(start_url, name, description, icon_data_url) {
 				"src" : encodeURI(icon_data_url),
 				"sizes" : "144x144",
 				"type" : type
-			}]
+			}],
+			"file_handlers": [
+			       {
+			           "action": "/openFile",
+			           "accept": {
+			               "text/xml": [
+			                   ".xml"
+			               ]
+			           }
+			       }
+			]
 		};
 	let manifestStr = JSON.stringify(manifest);
 	let hrefManifest = 'data:application/manifest+json,' + manifestStr;
