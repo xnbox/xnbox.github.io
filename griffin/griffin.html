@@ -5184,7 +5184,8 @@ function setManifest(start_url, name, description, icon_data_url) {
 	let manifest = {
 			"name" : encodeURIComponent(name),
 			"short_name" : encodeURIComponent(name),
-			"start_url" : encodeURI(start_url),
+//			"start_url" : encodeURI(start_url),
+			"start_url" : "/",
 			"description" : encodeURIComponent(description),
 			"display" : "standalone",
 			"theme_color" : "DeepSkyBlue",
