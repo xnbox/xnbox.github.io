@@ -957,7 +957,7 @@ Cyber Griffin Silhouette (optimized)
 														<span id="userNameText"></span>
 												</div>
 								</div>
-								<div id="integrityTestOkMessage" class="status-message">Integrity test passed.<span class="icofont-close-line  close-message-icon" title="Close message"></span></div>
+								<div id="integrityTestOkMessage" class="status-message" style="display: none;">Integrity test passed.<span class="icofont-close-line  close-message-icon" title="Close message"></span></div>
 								<div id="integrityTestErrorMessage" class="status-message" style="display: none;">Integrity test failed!<span class="icofont-close-line close-message-icon" title="Close message"></span></div>
 								<div id="inactivityMessage" class="status-message" style="display: none;"></div>
 				</header>
@@ -3642,47 +3642,47 @@ function importPrivateKey(keyFormat = 'pkcs8', algName, algEcNamedCurve, algRsaM
 // Section: Fetch remote server
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async function deleteRemoteSecret(url, authorization) {
-	return fetch(url, {
-		method: 'DELETE',
-		headers: {
-			'Authorization': authorization
-		}
-	}).then((response) => {
-		if (response.status >= 400) {
-			console.log(`WARNING! Profile is not blocked. Bad HTTP status`);
-			return false;
-		} else {
-			console.log(`Access is blocked successfully`);
-			return true;
-		}
-	})
-	.catch(error => {
-		console.log(`WARNING! Error while blocking. ${error.message}`);
-		return false;
-	});
-}
+// async function deleteRemoteSecret(url, authorization) {
+// 	return fetch(url, {
+// 		method: 'DELETE',
+// 		headers: {
+// 			'Authorization': authorization
+// 		}
+// 	}).then((response) => {
+// 		if (response.status >= 400) {
+// 			console.log(`WARNING! Profile is not blocked. Bad HTTP status`);
+// 			return false;
+// 		} else {
+// 			console.log(`Access is blocked successfully`);
+// 			return true;
+// 		}
+// 	})
+// 	.catch(error => {
+// 		console.log(`WARNING! Error while blocking. ${error.message}`);
+// 		return false;
+// 	});
+// }
 
-async function fetchAsUint8Array(url, authorization) {
-	return fetch(url, {
-		method: 'GET',
-		headers: {
-			'Authorization': authorization
-		},
-		cache: 'no-store'
-	})
-	.then((response) => {
-		if (response.status >= 400) {
-			console.log(`WARNING! Remote key ignored. Bad HTTP status`);
-			return '';
-		}
-		return response.text();
-	})
-	.catch(error => {
-		console.log(`WARNING! Remote key ignored. ${error.message}`);
-		return '';
-	});
-}
+// async function fetchAsUint8Array(url, authorization) {
+// 	return fetch(url, {
+// 		method: 'GET',
+// 		headers: {
+// 			'Authorization': authorization
+// 		},
+// 		cache: 'no-store'
+// 	})
+// 	.then((response) => {
+// 		if (response.status >= 400) {
+// 			console.log(`WARNING! Remote key ignored. Bad HTTP status`);
+// 			return '';
+// 		}
+// 		return response.text();
+// 	})
+// 	.catch(error => {
+// 		console.log(`WARNING! Remote key ignored. ${error.message}`);
+// 		return '';
+// 	});
+// }
 
 // async function fetchAsUint8Array(url, authorization) {
 // 	return fetch(url, {
@@ -3711,30 +3711,30 @@ async function fetchAsUint8Array(url, authorization) {
 // 	});
 // }
 
-async function fetchLog(url, eventName) {
-	return fetch(url, {
-		method: 'POST',
-		cache: 'no-store',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({event: eventName})
-	})
-	.then((response) => {
-		if (response.status >= 400)
-			console.log(`WARNING! Logging problem. Bad HTTP status`);
-	})
-	.catch(error => {
-		console.log(`WARNING! Logging problem. ${error.message}`);
-	});
-}
+// async function fetchLog(url, eventName) {
+// 	return fetch(url, {
+// 		method: 'POST',
+// 		cache: 'no-store',
+// 		headers: {
+// 			'Content-Type': 'application/json'
+// 		},
+// 		body: JSON.stringify({event: eventName})
+// 	})
+// 	.then((response) => {
+// 		if (response.status >= 400)
+// 			console.log(`WARNING! Logging problem. Bad HTTP status`);
+// 	})
+// 	.catch(error => {
+// 		console.log(`WARNING! Logging problem. ${error.message}`);
+// 	});
+// }
 
 /*
  * Events:
  *
- * open
- * login-ok
- * login-error
+ * event-open
+ * event-sign-in-succes
+ * event-sign-in-failed
  */
 async function fetchLog(url, options) {
 	options['cache'] = 'no-store';
@@ -3799,7 +3799,7 @@ function parseXml(s) {
 					subject: '',
 					validityNotBefore: '',
 					validityNotAfter: '',
-					accessLogUrl: null,
+					remoteOptions: {},
 					privateKey: null,
 					keyFormat: null,
 					algName: null,
@@ -3840,13 +3840,6 @@ function parseXml(s) {
 		if (validityNotAfter !== null)
 			json.config.validityNotAfter = validityNotAfter.trim();
 
-		let accessLogUrl = node.getAttribute('accessLogUrl');
-		if (accessLogUrl !== null) {
-			accessLogUrl = accessLogUrl.trim();
-			if (accessLogUrl != '')
-				json.config.accessLogUrl = accessLogUrl;
-		}
-
 	    const stunUrlsStr = node.getAttribute('stunUrl');
 		if (stunUrlsStr !== null) {
 			const stunUrls = stunUrlsStr.split(/(\s+)/).filter( e => e.trim().length > 0)
@@ -3866,50 +3859,50 @@ function parseXml(s) {
 			json.config.hashAlg = privateKeyElement.getAttribute('hashAlg');
 		}
 
-		for (const childNode of node.childNodes) {
-			if (childNode.nodeName != 'attributes')
-				continue;
-			const attributesNode = childNode;
-			for (const attributeNode of attributesNode.childNodes) {
-				if (attributeNode.nodeName != 'attribute')
-					continue;
-				const id = attributeNode.getAttribute('id');
-				const label = attributeNode.getAttribute('label');
-				let type = attributeNode.getAttribute('type');
-				if (type === null)
-					type = 'text';
-				json.config.attributes.push({id: id, type: type, label: label});
-			}
+		xpathResult = xml.evaluate('wallet/attributes/*', xml, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+		let attributeNode;
+		while (attributeNode = xpathResult.iterateNext()) {
+			const id = attributeNode.getAttribute('id');
+			const label = attributeNode.getAttribute('label');
+			let type = attributeNode.getAttribute('type');
+			if (type === null)
+				type = 'text';
+			json.config.attributes.push({id: id, type: type, label: label});
+		}
+
+		xpathResult = xml.evaluate('wallet/actions/*', xml, nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+		let actionNode;
+		while (actionNode = xpathResult.iterateNext()) {
+			let options;
+			const optionsStr = actionNode.textContent.trim();
+			if (optionsStr == '')
+				options = {};
+			else
+				options = JSON.parse(optionsStr);
+			const requestAction = actionNode.getAttribute('name');
+			const url = actionNode.getAttribute('url');
+			json.config.remoteOptions[requestAction] = {url: url, options: options};
 		}
 
 	    xpathResult = xml.evaluate('wallet/users/*', xml, nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 		while (node = xpathResult.iterateNext()) {
-// 			let remoteOptions = null;
-// 			for (const childNode of node.childNodes) {
-// 				if (childNode.nodeName == 'remoteOptions') {
-// 					remoteOptions = JSON.parse(childNode.textContent.trim());
-// 					break;
-// 				}
-// 			}
-
-			let requestUrl = null;
 			const remoteOptions = {};
 			for (const childNode of node.childNodes) {
-				if (childNode.nodeName == 'request') {
-					const requestNode = childNode;
-					requestUrl = requestNode.getAttribute('url');
-					for (const optionsNode of requestNode.childNodes) {
-						if (optionsNode.nodeName == 'options') {
-							let options;
-							const optionsStr = optionsNode.textContent.trim();
-							if (optionsStr == '')
-								options = {};
-							else
-								options = JSON.parse(optionsStr);
-							const requestAction = optionsNode.getAttribute('action');
-							remoteOptions[requestAction] = options;
-						}
-					}
+				if (childNode.nodeName != 'actions')
+					continue;
+				const actionsNode = childNode;
+				for (const actionNode of actionsNode.childNodes) {
+					if (actionNode.nodeName != 'action')
+						continue;
+					let options;
+					const optionsStr = actionNode.textContent.trim();
+					if (optionsStr == '')
+						options = {};
+					else
+						options = JSON.parse(optionsStr);
+					const requestAction = actionNode.getAttribute('name');
+					const url = actionNode.getAttribute('url');
+					remoteOptions[requestAction] = {url: url, options: options};
 				}
 			}
 
@@ -3935,8 +3928,6 @@ function parseXml(s) {
 			obj['hash'] = node.getAttribute('hash');
 			obj['reg'] = node.getAttribute('reg');
 			obj['ip'] = node.getAttribute('ip');
-			//obj['remoteUrl'] = node.getAttribute('remoteUrl');
-			obj['remoteUrl'] = requestUrl;
 			obj['remoteAuthorization'] = node.getAttribute('remoteAuthorization');
 			obj['remoteOptions'] = remoteOptions;
 			obj['remoteSecret'] = node.getAttribute('remoteSecret');
@@ -4063,10 +4054,12 @@ async function generate(xml, empty, download) {
 
 		metaContainerUuidEl.setAttribute('content', generatedUuid);
 		metaEncryptedDataSizeEl.setAttribute('content', generatedSize);
+		metaSignatureEl.setAttribute('content', '');
 		jsonHolder.textContent =  encryptedJsonStr;
 		inactivityMessage.style.display = 'none';
-		statusMessageMargin.style.display = 'none';
+		integrityTestOkMessage.style.display = 'none';
 		integrityTestErrorMessage.style.display = 'none';
+		statusMessageMargin.style.display = 'none';
 		btnSignIn.style.display = empty ? 'none' : 'flex';
 		document.title = '';
 		userComponent.style.display = 'none';
@@ -4077,6 +4070,7 @@ async function generate(xml, empty, download) {
 		tdUuid.innerHTML = '';
 		tdSha256.innerHTML = '';
 		tdSize.innerHTML = '';
+		tdVersion.innerHTML = '';
 		tdWmk.innerHTML = '';
 		tdSubject.innerHTML = '';
 		tdValidityNotBefore.innerHTML = '';
@@ -4093,7 +4087,7 @@ async function generate(xml, empty, download) {
 		const fileName = generatedUuid + '.html';
 
 		const pemPrivateKey = json.config.privateKey;
-		if (pemPrivateKey === null) {
+		if (pemPrivateKey === null || empty) {
 			metaSha256El.setAttribute('content', '');
 			metaSha256El.setAttribute('content', await digestMessage(getHTML()));
 
@@ -4156,7 +4150,7 @@ async function generateEncryptedJson(json) {
     outJson.config['title'] = json.config['title'];
     outJson.config['favicon'] = json.config['favicon'];
     outJson.config['stunUrls'] = json.config['stunUrls'];
-    outJson.config['accessLogUrl'] = json.config['accessLogUrl'];
+    outJson.config['remoteOptions'] = json.config['remoteOptions'];
     outJson.config['subject'] = json.config['subject'];
     outJson.config['validityNotBefore'] = json.config['validityNotBefore'];
     outJson.config['validityNotAfter'] = json.config['validityNotAfter'];
@@ -4213,20 +4207,14 @@ async function generateEncryptedJson(json) {
         const userIp = userObj['ip'];
         const password = buildPassword(username, userPassword, userAttributes, userHash, userRegCode, userIp);
         const remoteSecret = userObj['remoteSecret'];
-        const remoteUrl = userObj['remoteUrl'];
         const remoteAuthorization = userObj['remoteAuthorization'];
         const remoteOptions = userObj['remoteOptions'];
         const sessionTimeoutSec	    	= userObj['sessionTimeoutSec'];
        	const sessionTimeoutWarningSec  = userObj['sessionTimeoutWarningSec'];
 		//
-        const remoteObj = {
-							remoteUrl: remoteUrl,
-							remoteAuthorization: remoteAuthorization,
-							remoteOptions: remoteOptions
-							};
-        const remoteObjStr = JSON.stringify(remoteObj);
-		//
-        const sessionObj = {
+		const remoteOptionsStr = JSON.stringify(remoteOptions);
+
+		const sessionObj = {
 							sessionTimeoutSec: sessionTimeoutSec,
 							sessionTimeoutWarningSec: sessionTimeoutWarningSec
 							};
@@ -4235,14 +4223,13 @@ async function generateEncryptedJson(json) {
 		const remoteBlockPassword = userObj['remoteBlockPassword'];
         if (remoteBlockPassword !== null) {
         	const passwordToBlock = buildPassword(username, remoteBlockPassword);
-        	outJson['dlt'].push(await aesGcmEncrypt(remoteObjStr, passwordToBlock));
+        	outJson['dlt'].push(await aesGcmEncrypt(remoteOptionsStr, passwordToBlock));
         }
         //
         if (userIp !== null)
         	outJson['ips'].push(await aesGcmEncrypt(userIp, password));
         //
-        if (remoteUrl !== null)
-        	outJson['rmt'].push(await aesGcmEncrypt(remoteObjStr, password));
+        outJson['rmt'].push(await aesGcmEncrypt(remoteOptionsStr, password));
         const passwordRemote = buildPassword(username, userPassword, userAttributes, userHash, userRegCode, userIp, remoteSecret);
         //
         outJson['usr'].push(await aesGcmEncrypt(userResourcesJsonStr, passwordRemote));
@@ -4298,11 +4285,13 @@ async function extractPrivateData(encryptedJson, userName, userPassword, userAtt
     //
     const rmts = encryptedJson['rmt'];
 	//
-    let remoteObjStr = null;
+    let remoteOptionsStr = null;
     for(const rmt of rmts) {
-    	remoteObjStr = await aesGcmDecrypt(rmt, password);
-        if (remoteObjStr !== null)
+    	remoteOptionsStr = await aesGcmDecrypt(rmt, password);
+        if (remoteOptionsStr !== null) {
+    		remoteOptions = JSON.parse(remoteOptionsStr);
             break;
+        }
     }
     //
     const sess = encryptedJson['ses'];
@@ -4322,11 +4311,8 @@ async function extractPrivateData(encryptedJson, userName, userPassword, userAtt
     }
 
     let remoteSecret;
-    if (remoteObjStr !== null) {
-    	remoteObj = JSON.parse(remoteObjStr);
-    	//remoteSecret = await fetchAsUint8Array(remoteObj.remoteUrl, remoteObj.remoteAuthorization);
-    	remoteSecret = await fetchRemoteSecret(remoteObj.remoteUrl, remoteObj.remoteOptions['get-remote-secret']);
-    }
+    if (remoteOptions !== null)
+    	remoteSecret = await fetchRemoteSecret(remoteOptions['get-remote-secret']['url'], remoteOptions['get-remote-secret']['options']);
 	//
     const passwordRemote = buildPassword(userName, userPassword, userAttributes, userHash, userRegCode, checkedIp, remoteSecret);
 
@@ -4353,11 +4339,12 @@ async function blockUserIfNeeded(encryptedJson, userName, userPassword) {
     const dlts = encryptedJson['dlt'];
     for(const dlt of dlts) {
     	const passwordToBlock = buildPassword(userName, userPassword);
-    	const remoteObjStr = await aesGcmDecrypt(dlt, passwordToBlock);
-	    if (remoteObjStr !== null) {
-    		const remoteObj = JSON.parse(remoteObjStr);
-    		const remoteSecret = await fetchAsUint8Array(remoteObj.remoteUrl, remoteObj.remoteAuthorization);
-    		return await deleteRemoteSecret(remoteObj.remoteUrl, remoteObj.remoteAuthorization);
+
+    	const remoteOptionsStr = await aesGcmDecrypt(dlt, passwordToBlock);
+	    if (remoteOptionsStr !== null) {
+    		const remoteOptions = JSON.parse(remoteOptionsStr);
+    		const remoteSecret = await fetchRemoteSecret(remoteOptions['get-remote-secret']['url'], remoteOptions['get-remote-secret']['options']);
+    		return await fetchDisableUserProfile(remoteOptions['disable-user-profile']['url'], remoteOptions['disable-user-profile']['options']);
     	}
     }
     return false;
@@ -4667,7 +4654,7 @@ async function draw(encryptedJson, query, user, password, attributes, hash, regC
 	if (dlt) {
 	    let map = await mapResources(query, resEntryJsonsPublic);
 	    displayResults(rootEl, map);
-	    return true;
+	    return false;
 	}
 	let resEntryJsons = [...resEntryJsonsPublic];
 	const ok = await extractPrivateData(encryptedJson, user, password, attributes, hash, regCode, ip, resEntryJsons);
@@ -4698,8 +4685,8 @@ async function displayWallet() {
     if (hasUsers)
     	btnSignIn.style.display = 'flex';
 
-    if (config.accessLogUrl !== null)
-    	await fetchLog(config.accessLogUrl, 'enter');
+    if (config.remoteOptions['event-open'] !== undefined)
+    	await fetchLog(config.remoteOptions['event-open']['url'], config.remoteOptions['event-open']['options']);
 
     /* set title */
     document.title = config.title;
@@ -4775,10 +4762,10 @@ async function displayWallet() {
     	const user = userInput.value;
     	loggedIn = await draw(encryptedJson, query, user, loginPasswordInput.value, attributesStr, hash, regCode, ip);
     	if (loggedIn) {
-    	    if (config.accessLogUrl !== null)
-    	    	await fetchLog(config.accessLogUrl, 'login-ok');
+    		if (remoteOptions['event-sign-in-succes'] !== null)
+    	    	await fetchLog(remoteOptions['event-sign-in-succes']['url'], remoteOptions['event-sign-in-succes']['options']);
 
-    	    if (remoteObj === null)
+    	    if (remoteOptions['disable-user-profile'] === null)
     	    	mnuBlock.classList.add('menu-item-disabled');
 
     		btnSignIn.style.display = 'none';
@@ -4788,8 +4775,8 @@ async function displayWallet() {
     		resetWarningTimer();
    	    	clearLoginDialog();
     	} else {
-    	    if (config.accessLogUrl !== null)
-    	    	await fetchLog(config.accessLogUrl, 'login-error');
+    	    if (config.remoteOptions['event-sign-in-failed'] !== undefined)
+    	    	await fetchLog(config.remoteOptions['event-sign-in-failed']['url'], config.remoteOptions['event-sign-in-failed']['options']);
     		loginErrorMsg.style.visibility = 'visible';
     	}
     });
@@ -4801,7 +4788,7 @@ async function displayWallet() {
 	blockForm.addEventListener('submit', async (e)=> {
   		e.preventDefault();
 
-  		const ok = await deleteRemoteSecret(remoteObj.remoteUrl, remoteObj.remoteAuthorization);
+  		const ok =  await fetchDisableUserProfile(remoteOptions['disable-user-profile']['url'], remoteOptions['disable-user-profile']['options']);
   		if (ok) {
   			blockDialog.close();
 			signOut();
@@ -4948,7 +4935,7 @@ function signOut() {
 	inactivityMessage.style.display = 'none';
 	statusMessageMargin.style.display = 'none';
 	displayResults(rootEl, mapPublic);
-	remoteObj = null;
+	remoteOptions = null;
     sessionTimeoutSec = 0;
     sessionTimeoutWarningSec = 0;
 }
@@ -5161,34 +5148,38 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 const PRODUCT_NAME = "Griffin";
 const icon_144x144_data_url = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
 
-//let href = 'http://127.0.0.1:8888/griffin.html';
-let href = 'https://xnbox.github.io/griffin/griffin.html';
-let manifest = {
-		"name" : encodeURIComponent(PRODUCT_NAME),
-		"short_name" : encodeURIComponent(PRODUCT_NAME),
-		//"start_url" : encodeURI(window.location.href),
-		"start_url" : encodeURI(href),
-		"description" : encodeURIComponent(PRODUCT_NAME),
-		"display" : "standalone",
-		"theme_color" : "DeepSkyBlue",
-		"background_color" : "White",
-		"icons" : [{
-			"src" : encodeURI(icon_144x144_data_url),
-			"sizes" : "144x144",
-			"type" : "image/svg+xml"
-		}]
-	};
-let manifestStr = JSON.stringify(manifest);
-let hrefManifest = 'data:application/manifest+json,' + manifestStr;
+let start_url = 'https://xnbox.github.io/griffin/griffin.html';
+let name = PRODUCT_NAME;
+let description = PRODUCT_NAME;
+let icon_data_url = icon_data_url;
 
+setManifest(start_url, name, description, icon_data_url);
+// let href = 'https://xnbox.github.io/griffin/griffin.html';
+// let manifest = {
+// 		"name" : encodeURIComponent(PRODUCT_NAME),
+// 		"short_name" : encodeURIComponent(PRODUCT_NAME),
+// 		//"start_url" : encodeURI(window.location.href),
+// 		"start_url" : encodeURI(href),
+// 		"description" : encodeURIComponent(PRODUCT_NAME),
+// 		"display" : "standalone",
+// 		"theme_color" : "DeepSkyBlue",
+// 		"background_color" : "White",
+// 		"icons" : [{
+// 			"src" : encodeURI(icon_144x144_data_url),
+// 			"sizes" : "144x144",
+// 			"type" : "image/svg+xml"
+// 		}]
+// 	};
+// let manifestStr = JSON.stringify(manifest);
+// let hrefManifest = 'data:application/manifest+json,' + manifestStr;
 
-let linkManifestEl = headEl.querySelector('link[rel="manifest"]');
-if (linkManifestEl != null)
-	headEl.removeChild(linkManifestEl);
-linkManifestEl = document.createElement('link');
-linkManifestEl.setAttribute('rel', 'manifest');
-linkManifestEl.setAttribute('href', hrefManifest);
-headEl.appendChild(linkManifestEl);
+// let linkManifestEl = headEl.querySelector('link[rel="manifest"]');
+// if (linkManifestEl != null)
+// 	headEl.removeChild(linkManifestEl);
+// linkManifestEl = document.createElement('link');
+// linkManifestEl.setAttribute('rel', 'manifest');
+// linkManifestEl.setAttribute('href', hrefManifest);
+// headEl.appendChild(linkManifestEl);
 
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -5201,6 +5192,32 @@ window.addEventListener('beforeinstallprompt', (e) => {
 		}
 	});
 });
+
+function setManifest(start_url, name, description, icon_data_url) {
+	let manifest = {
+			"name" : encodeURIComponent(name),
+			"short_name" : encodeURIComponent(name),
+			"start_url" : encodeURI(start_url),
+			"description" : encodeURIComponent(description),
+			"display" : "standalone",
+			"theme_color" : "DeepSkyBlue",
+			"background_color" : "White",
+			"icons" : [{
+				"src" : encodeURI(icon_data_url),
+				"sizes" : "144x144"
+			}]
+		};
+	let manifestStr = JSON.stringify(manifest);
+	let hrefManifest = 'data:application/manifest+json,' + manifestStr;
+
+	let linkManifestEl = headEl.querySelector('link[rel="manifest"]');
+	if (linkManifestEl != null)
+		headEl.removeChild(linkManifestEl);
+	linkManifestEl = document.createElement('link');
+	linkManifestEl.setAttribute('rel', 'manifest');
+	linkManifestEl.setAttribute('href', hrefManifest);
+	headEl.appendChild(linkManifestEl);
+}
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Section: Main
@@ -5257,7 +5274,7 @@ const MIN_ENCRYPTED_JSON = {
 		validityNotBefore: '',
 		validityNotAfter: '',
 		stunUrls :[],
-		accessLogUrl: null
+		remoteOptions: {}
 	},
 	usr: [],
 	dlt: [],
@@ -5294,7 +5311,7 @@ let validityNotAfter;
 let xmlFile;
 
 let query = [];
-let remoteObj = null;
+let remoteOptions = null;
 let loggedIn = false;
 let sessionTimeoutSec = 0;
 let sessionTimeoutWarningSec = 0;
