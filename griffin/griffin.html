@@ -4695,6 +4695,24 @@ async function displayWallet() {
 	/* set favicon */
 	favicon.href = config.favicon;
 
+	let start_url;
+	let name;
+	let description;
+	let icon_data_url;
+
+	if (WAS_EMPTY) {
+		start_url = 'https://xnbox.github.io/griffin/griffin.html';
+		name = PRODUCT_NAME;
+		description = PRODUCT_NAME;
+		icon_data_url = icon_144x144_data_url;
+	} else {
+		start_url = 'https://xnbox.github.io/griffin/griffin.html';
+		name = config.title;
+		description = config.title;
+		icon_data_url = config.favicon;
+	}
+	setManifest(start_url, name, description, icon_data_url);
+
     let stunUrls = config['stunUrls'];
     let ip = '';
 	if (stunUrls !== undefined && stunUrls.length != 0)
@@ -5148,12 +5166,12 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 const PRODUCT_NAME = "Griffin";
 const icon_144x144_data_url = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
 
-let start_url = 'https://xnbox.github.io/griffin/griffin.html';
-let name = PRODUCT_NAME;
-let description = PRODUCT_NAME;
-let icon_data_url = icon_144x144_data_url;
+// let start_url = 'https://xnbox.github.io/griffin/griffin.html';
+// let name = PRODUCT_NAME;
+// let description = PRODUCT_NAME;
+// let icon_data_url = icon_144x144_data_url;
+//setManifest(start_url, name, description, icon_data_url);
 
-setManifest(start_url, name, description, icon_data_url);
 // let href = 'https://xnbox.github.io/griffin/griffin.html';
 // let manifest = {
 // 		"name" : encodeURIComponent(PRODUCT_NAME),
