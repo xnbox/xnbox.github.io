@@ -36,7 +36,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="sha256" content="">
 <meta name="signature" content="">
-<meta name="product-version" content="1.01.01">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
 
@@ -3795,7 +3794,7 @@ function parseXml(s) {
 		const json = {
 			config: {
 					title: PRODUCT_NAME,
-					favicon: icon_144x144_data_url,
+					favicon: ICON_144X144_DATA_URL,
 					subject: '',
 					validityNotBefore: '',
 					validityNotAfter: '',
@@ -4085,7 +4084,7 @@ async function generate(xml, empty, download) {
 		if (linkIconEl != null)
 			linkIconEl.href = '';
 
-		const fileName = generatedUuid + '.html';
+		const fileName = empty ? FILE_NAME : generatedUuid + '.html';
 
 		const pemPrivateKey = json.config.privateKey;
 		if (pemPrivateKey === null || empty) {
@@ -4822,7 +4821,7 @@ async function displayWallet() {
 	}
 
 	mnuAbout.addEventListener('click', (e)=> {
-		logo.src = icon_144x144_data_url;
+		logo.src = ICON_144X144_DATA_URL;
 		tdVersion.innerHTML = PRODUCT_VERSION;
 		tdUuid.innerHTML = uuid;
 		tdSha256.innerHTML = sha256.substring(0, 36) + '‏‏‎<br>‎' + sha256.substring(36);
@@ -5048,6 +5047,18 @@ function resetSecondTimer() {
 // Section: Bootstrap (PWA, favicon)
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+const PRODUCT_VERSION = '1.01.01';
+const FILE_NAME = "griffin.html";
+const INDEX_URL = '/griffin/' + FILE_NAME;
+const PRODUCT_NAME = "Griffin";
+const ICON_144X144_DATA_URL = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
+const START_URL = 'https://xnbox.github.io' + INDEX_URL;
+
+
+const ZERO_UUID = '00000000-0000-0000-0000-000000000000';
+const ZERO_SHA_256 = '0000000000000000000000000000000000000000000000000000000000000000';
+const ZERO_SUBJECT = 'Empty container';
+
 //https://gist.github.com/serin113/3186244
 /*
  * Lets you use your browser's back/forward buttons for in-page navigation by
@@ -5113,7 +5124,6 @@ window.addEventListener('previous', function(){
 const headEl = document.querySelector('head');
 const metaSha256El = headEl.querySelector('meta[name="sha256"]');
 const metaSignatureEl = headEl.querySelector('meta[name="signature"]');
-const metaSoftwareVersionEl = headEl.querySelector('meta[name="product-version"]');
 const metaContainerUuidEl = headEl.querySelector('meta[name="uuid"]');
 const metaEncryptedDataSizeEl = headEl.querySelector('meta[name="size"]');
 
@@ -5155,14 +5165,7 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 	if('serviceWorker' in navigator)
 		navigator.serviceWorker.register('griffin-sw.js');
 
-const PRODUCT_NAME = "Griffin";
-const icon_144x144_data_url = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
-
-let start_url = 'https://xnbox.github.io/griffin/griffin.html';
-let name = PRODUCT_NAME;
-let description = PRODUCT_NAME;
-let icon_data_url = icon_144x144_data_url;
-setManifest(start_url, name, description, icon_data_url);
+setManifest(START_URL, PRODUCT_NAME, PRODUCT_NAME, ICON_144X144_DATA_URL);
 
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -5262,14 +5265,10 @@ document.addEventListener('keydown', e => {
 	  }
 });
 
-const ZERO_UUID = '00000000-0000-0000-0000-000000000000';
-const ZERO_SHA_256 = '0000000000000000000000000000000000000000000000000000000000000000';
-const ZERO_SUBJECT = 'Empty container';
-
 const MIN_ENCRYPTED_JSON = {
 	config: {
 		title: PRODUCT_NAME,
-		favicon: icon_144x144_data_url,
+		favicon: ICON_144X144_DATA_URL,
 		subject: ZERO_SUBJECT,
 		validityNotBefore: '',
 		validityNotAfter: '',
@@ -5323,7 +5322,6 @@ const ID_LENGTH = 12;
 const KEY_LENGTH = 18;
 const STANDARD_KEY = new Uint8Array(KEY_LENGTH);
 const uuid = metaContainerUuidEl.getAttribute('content');
-const PRODUCT_VERSION = metaSoftwareVersionEl.getAttribute('content');
 const encryptedJsonStr = jsonHolder.textContent;
 const encryptedJson = JSON.parse(encryptedJsonStr);
 const config = encryptedJson['config'];
