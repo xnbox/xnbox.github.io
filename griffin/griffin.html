@@ -965,7 +965,7 @@ Cyber Griffin Silhouette (optimized)
 								<a id="mnuCreateEmptyWallet" class="menu-item">Create empty wallet</a>
 								<a id="mnuCreateWalletFromSource" class="menu-item">Create wallet from source…</a>
 								<div class="menu-separator"></div>
-								<a id="mnuInstall" class="menu-item menu-item-disabled" style="display: none;">Install…</a>
+								<a id="mnuInstall" class="menu-item menu-item-disabled" style="display: block;">Install…</a>
 								<div class="menu-separator"></div>
 								<a id="mnuRegister" class="menu-item">Register…</a>
 								<a id="mnuUnregister" class="menu-item">Unregister…</a>
@@ -5194,16 +5194,18 @@ function setManifest(start_url, name, description, icon_data_url) {
 				"sizes" : "144x144",
 				"type" : type
 			}],
-			"file_handlers": [
-			       {
-			           "action": "/",
+			"file_handlers": [{
+			           "action": "/griffin,html",
+			           "name": name,
 			           "accept": {
-			               "text/*": [
-			                   ".xml"
-			               ]
-			           }
-			       }
-			]
+			               "text/xml": [".xml"]
+			           },
+			           "icons": [{
+			   				"src" : encodeURI(icon_data_url),
+							"sizes" : "144x144",
+							"type" : type
+						}]
+			}]
 		};
 	let manifestStr = JSON.stringify(manifest);
 	let hrefManifest = 'data:application/manifest+json,' + manifestStr;
