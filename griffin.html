@@ -33,7 +33,7 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="unavailable_after: 1970-01-01">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="sha256" content="82c5b83e6ae54a80ec0ed37581f2e08f62d3ecaf90875855ca3759fa9f91092e">
+<meta name="sha256" content="51914565491ea6565009757a1edf181acf876cfde51d656ba439d84515b32dfa">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -201,7 +201,7 @@ header {
 
 .status-message {
 	display: none;
-	position: fixed;
+	position: absolute;
 	top: var(--header-height);
 	height: 2rem;
 	width: 100%;
@@ -475,14 +475,6 @@ a:hover.res-id {
 	padding: .6rem;
 }
 
-.totp-checkbox-holder {
-	display: flex;
-	gap: .3rem;
-	width: 100%;
-	justify-content: flex-start;
-	font-size: 1rem;
-}
-
 .dialogTitle {
 	color: #008DCD;
 	font-size: 1.5rem;
@@ -496,6 +488,23 @@ a:hover.res-id {
 .label {
 	user-select: none;
 	user-drag: none;
+}
+
+.checkbox-label {
+	user-select: none;
+	user-drag: none;
+	cursor: pointer;
+	white-space: nowrap;
+	max-width: min-content;
+}
+
+.checkbox-holder {
+	display: flex;
+	gap: .2rem;
+	width: 100%;
+	justify-content: flex-start;
+	font-size: 1rem;
+	color: #222;
 }
 
 .dialogLabel {
@@ -804,10 +813,7 @@ Cyber Griffin Silhouette (optimized)
 							<input id="userInput" type="text" name="username" placeholder="Enter Username" required="" autocomplete="off" oninvalid="this.setCustomValidity('Username can not be empty!')" oninput="this.setCustomValidity('');">
 							<label for="loginPasswordInput" class="label dialogLabel">Password:</label>
 							<input id="loginPasswordInput" name="password" type="password" placeholder="Enter Password" autocomplete="off">
-							<span>
-								<input id="loginShowPassword" type="checkbox" onchange="togglePassword(this)">
-								<label for="loginShowPassword" class="label">Show password</label>
-							</span>
+							<span class="checkbox-holder"><input id="loginShowPassword" type="checkbox" onchange="togglePassword(this)"><label for="loginShowPassword" class="checkbox-label">Show password</label></span>
 					</div>
 					<div class="buttonGroup">
 						<br class="label"> <br class="label"> <br class="label"> <br class="label">
@@ -831,16 +837,15 @@ Cyber Griffin Silhouette (optimized)
 								<div id="decryptErrorMsg" class="label errorMsg" style="visibility: hidden;">Bad credentials. Decrypt failed!</div>
 								<label id="decryptPasswordInputLabel" for="decryptPasswordInput" class="label dialogLabel">Password:</label>
 								<input id="decryptPasswordInput" name="password" type="password" placeholder="Enter Password" autocomplete="off">
-								<span>
-									<input id="decryptShowPassword" type="checkbox" onchange="togglePassword(this)">
-									<label id="decryptShowPasswordLabel" for="decryptShowPassword" class="label">Show password</label>
+								<span class="checkbox-holder">
+									<input id="decryptShowPassword" type="checkbox" onchange="togglePassword(this)"><label id="decryptShowPasswordLabel" for="decryptShowPassword" class="checkbox-label">Show password</label>
 								</span>
 								<br class="label">
 								<label id="vernamKeyTextAreaLabel" for="vernamKeyTextArea" class="label dialogLabel">Vernam key (XOR pad):</label>
 								<textarea id="vernamKeyTextArea" placeholder="Enter Vernam key (XOR pad)" autocomplete="off" style="-webkit-text-security: disc;"></textarea>
-								<span>
+								<span class="checkbox-holder">
 									<input id="decryptShowVernamKey" type="checkbox" onchange="togglePassword(this)">
-									<label id="decryptShowVernamKeyLabel" for="decryptShowVernamKey" class="label">Show Vernam Key (XOR pad)</label>
+									<label id="decryptShowVernamKeyLabel" for="decryptShowVernamKey" class="checkbox-label">Show Vernam Key (XOR pad)</label>
 								</span>
 					</div>
 					<div class="buttonGroup">
@@ -911,9 +916,9 @@ Cyber Griffin Silhouette (optimized)
 								<br class="label">
 								<label for="registerPasswordInput" class="label dialogLabel required">Registration Code:</label>
 								<input id="registerPasswordInput" name="password" type="password" placeholder="Enter registration code" required="" autocomplete="off" oninvalid="this.setCustomValidity('Registration code can not be empty!')" oninput="this.setCustomValidity('');">
-								<span>
+								<span class="checkbox-holder">
 									<input id="registerShowPassword" type="checkbox" onchange="togglePassword(this)">
-									<label for="registerShowPassword" class="label">Show registration code</label>
+									<label for="registerShowPassword" class="checkbox-label">Show registration code</label>
 								</span>
 								</div>
 								<div class="buttonGroup">
@@ -4524,7 +4529,7 @@ async function dataToHtml(el, data) {
 			rootEl.appendChild(borderedSpacForQrCodeEl);
 
 			const checkboxHolderEl = document.createElement('span');
-			checkboxHolderEl.classList.add('totp-checkbox-holder');
+			checkboxHolderEl.classList.add('checkbox-holder');
 			rootEl.appendChild(checkboxHolderEl);
 
 			const checkboxId = uuidv4();
@@ -4540,8 +4545,8 @@ async function dataToHtml(el, data) {
 
 			const checkboxLabelEl = document.createElement('label');
 			checkboxLabelEl.setAttribute('for', checkboxId);
-			checkboxHolderEl.classList.add('label');
 			checkboxLabelEl.innerHTML = 'Show otpauth URI';
+			checkboxLabelEl.classList.add('checkbox-label');
 			checkboxHolderEl.appendChild(checkboxLabelEl);
 		});
 	} else {
@@ -5097,22 +5102,38 @@ if(window.history && history.pushState){ // check for history api support
 
 window.addEventListener('previous', function(){
 	console.log('back button clicked');
+	for (const menuEl of menuEls)
+		if (menuEl.style.display != 'none') {
+			menuEl.style.display = 'none'
+			break;
+		}
+	//
+	for (const dialogEl of dialogsEls)
+		if (dialogEl.open) {
+			dialogEl.close();
+			clearDecryptDialog();
+			clearLoginDialog();
+		    clearRegisterDialog();
+			blockDialog.close();
+			clearBlockDialog();
+			break;
+		}
 
-	aboutDialog.close();
+// 	aboutDialog.close();
 
-	decryptDialog.close();
-	clearDecryptDialog();
+// 	decryptDialog.close();
+// 	clearDecryptDialog();
 
-	loginDialog.close();
-	clearLoginDialog();
+// 	loginDialog.close();
+// 	clearLoginDialog();
 
-    registerDialog.close();
-    clearRegisterDialog();
+//     registerDialog.close();
+//     clearRegisterDialog();
 
-	unregisterDialog.close();
+// 	unregisterDialog.close();
 
-	blockDialog.close();
-	clearBlockDialog();
+// 	blockDialog.close();
+// 	clearBlockDialog();
 }, false);
  
 var showModal = function() {
@@ -5133,8 +5154,8 @@ var hideModal = function(event) {
 document.addEventListener('keydown', e => {
 	if (e.key === 'Escape') {
 		let menuShown = false;
-		for (const mentEl of menuEls)
-			if (mentEl.style.display != 'none') {
+		for (const menuEl of menuEls)
+			if (menuEl.style.display != 'none') {
 				menuShown = true;
 				break;
 			}
