@@ -71,7 +71,9 @@
 	word-wrap: normal;
 	direction: ltr;
 	line-height: 1;
+	font-feature-settings: "liga";
 	-webkit-font-feature-settings: "liga";
+	font-smoothing: antialiased;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -392,7 +394,7 @@ main {
 	font-family: monospace;
 	font-variant: tabular-nums;
 	font-feature-settings: "zero";
-	font-variant: tabular-nums;
+	-webkit-feature-settings: "zero";
 	font-size: .7rem;
 	color: rgba(0, 0, 0, .6);
 }
@@ -446,6 +448,7 @@ a:hover.res-id {
 	font-family: monospace;
 	font-variant: tabular-nums;
 	font-feature-settings: "zero";
+	-webkit-feature-settings: "zero";
 	font-weight: bold;
 	letter-spacing: .2rem;
 }
@@ -463,6 +466,7 @@ a:hover.res-id {
 	font-family: monospace;
 	font-variant: tabular-nums;
 	font-feature-settings: "zero";
+	-webkit-feature-settings: "zero";
 }
 
 .bordered-space {
@@ -544,10 +548,6 @@ a:hover.res-id {
 	margin: auto;
 }
 
-.about-table tr {
-	padding-bottom: 1.5rem;
-}
-
 .about-table td {
 	cursor: default;
 	font-size: .8rem;
@@ -557,17 +557,22 @@ a:hover.res-id {
 }
 
 .about-fld-text {
+	border-bottom: 1px solid #008DCD;
 	text-align: left;
 	color: #008DCD;
-	font-weight: bold;
+	KKKfont-weight: bold;
+	margin-bottom: .25rem;
 }
+
 .about-fld-value {
 	text-align: left;
 	font-size: .8rem;
-	color: #222;
+	color: #333;
 	font-family: monospace;
 	font-variant: tabular-nums;
 	font-feature-settings: "zero";
+	-webkit-feature-settings: "zero";
+	margin-bottom: .25rem;
 }
 
 input[type="file"] {
@@ -592,6 +597,7 @@ textarea {
 	font-family: monospace;
 	font-variant: tabular-nums;
 	font-feature-settings: "zero";
+	-webkit-feature-settings: "zero";
 }
 
 input:not([type="file"]):not([type="checkbox"]):not([type="button"]):not([type="submit"]):focus,
@@ -931,7 +937,6 @@ Cyber Griffin Silhouette (optimized)
 								<h2 class="label dialogTitle dialogTitleAbout">About GRIFFIN</h2>
 									<img id="logo" src="">
 									<br class="label">
-									<br class="label">
 									<hr>
 									<table class="about-table">
 										<tbody>
@@ -947,7 +952,7 @@ Cyber Griffin Silhouette (optimized)
 									</table>
 					</div>
 					<div class="buttonGroup">
-						<br class="label"> <br class="label"> <br class="label"> <br class="label">
+						<br class="label">
 						<input id="btnAboutClose" type="button" class="dialogButton button-close cancel-action" value="Close">
 						<div class="gap"></div>
 					</div>
@@ -5043,6 +5048,10 @@ const metaSignatureEl = headEl.querySelector('meta[name="signature"]');
 const metaContainerUuidEl = headEl.querySelector('meta[name="uuid"]');
 const metaEncryptedDataSizeEl = headEl.querySelector('meta[name="size"]');
 
+const statusMessagesEls = document.querySelectorAll('.status-message');
+const mentEls = document.querySelectorAll('.menu');
+const dialogsEls = document.querySelectorAll('dialog');
+
 const DOC_DIGEST = metaSha256El.getAttribute('content');
 const DOC_CONTENT = getHTML();
 
@@ -5076,7 +5085,6 @@ if(window.history && history.pushState){ // check for history api support
 		this.addEventListener('popstate', function(event, state){
 			// check history state and fire custom events
 			if(state = event.state){
-	
 				event = document.createEvent('Event');
 				event.initEvent(state > 0 ? 'next' : 'previous', true, true);
 				this.dispatchEvent(event);
@@ -5121,6 +5129,31 @@ var hideModal = function(event) {
         // hide the HTML elements
     }
 };
+
+/* close status message with Escape key */
+document.addEventListener('keydown', e => {
+	if (e.key === 'Escape') {
+		let menuShown = false;
+		for (const mentEl of mentEls)
+			if (mentEl.style.display != 'none') {
+				menuShown = true;
+				break;
+			}
+		//
+		let dialogShown = false;
+		for (const dialogEl of dialogsEls)
+			if (dialogEl.open) {
+				dialogShown = true;
+				break;
+			}
+		//
+		if (!menuShown && !dialogShown)
+			for (const statusMessageEl of statusMessagesEls) {
+				statusMessageEl.style.display = 'none';
+				statusMessageMargin.style.display = 'none';
+			}
+	}
+});
 
 /* Self integrity test */
 // save
