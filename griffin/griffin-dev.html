@@ -1045,6 +1045,9 @@ function normalize(s) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Common client utils
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function isWeb() {
+	return window.location.protocol == 'https:' || window.location.protocol == 'http:';
+}
 
 function getHTML() {
 	let outerHTML = document.documentElement.outerHTML;
@@ -4609,15 +4612,15 @@ async function displayWallet() {
 		validityNotAfter = config.validityNotAfter;
 	}
 
-	if (window.location.protocol == 'file:')
-		downloadIcon.style.display = 'none';
-	else {
+	if (isWeb()) {
 		downloadIcon.style.display = 'flex';
 		downloadIcon.addEventListener('click', (e) => {
 			const fileName = window.location.href.split('/').pop().split('#')[0].split('?')[0];
 			downloadAsHtmlFile(fileName, DOC_CONTENT);
 	    });
-	}
+	} else
+		downloadIcon.style.display = 'none';
+
     const usrEncs = encryptedJson['usr'];
     hasUsers = usrEncs.length != 0;
     if (hasUsers)
@@ -4753,7 +4756,7 @@ async function displayWallet() {
 		menuLeft.style.display = 'none';
 	});
 
-	if (WAS_EMPTY) {
+	if (WAS_EMPTY && isWeb()) {
 		sepInstall.style.display = 'block';
 		mnuInstall.style.display = 'block';
 		mnuInstall.addEventListener('click', e => {
