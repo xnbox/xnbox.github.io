@@ -33,7 +33,7 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="unavailable_after: 1970-01-01">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="sha256" content="63d8ad2733c05857f3bfc2a0d514af8c6fddf5325e7148990e81d0358b4d2e16">
+<meta name="sha256" content="4284e53df639421175a0460a85c08171bd015f76fba9cbf60b9cea316621e22e">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -5048,7 +5048,7 @@ const metaContainerUuidEl = headEl.querySelector('meta[name="uuid"]');
 const metaEncryptedDataSizeEl = headEl.querySelector('meta[name="size"]');
 
 const statusMessagesEls = document.querySelectorAll('.status-message');
-const mentEls = document.querySelectorAll('.menu');
+const menuEls = document.querySelectorAll('.menu');
 const dialogsEls = document.querySelectorAll('dialog');
 
 const DOC_DIGEST = metaSha256El.getAttribute('content');
@@ -5133,7 +5133,7 @@ var hideModal = function(event) {
 document.addEventListener('keydown', e => {
 	if (e.key === 'Escape') {
 		let menuShown = false;
-		for (const mentEl of mentEls)
+		for (const mentEl of menuEls)
 			if (mentEl.style.display != 'none') {
 				menuShown = true;
 				break;

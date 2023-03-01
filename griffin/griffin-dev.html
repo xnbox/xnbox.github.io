@@ -5049,7 +5049,7 @@ const metaContainerUuidEl = headEl.querySelector('meta[name="uuid"]');
 const metaEncryptedDataSizeEl = headEl.querySelector('meta[name="size"]');
 
 const statusMessagesEls = document.querySelectorAll('.status-message');
-const mentEls = document.querySelectorAll('.menu');
+const menuEls = document.querySelectorAll('.menu');
 const dialogsEls = document.querySelectorAll('dialog');
 
 const DOC_DIGEST = metaSha256El.getAttribute('content');
@@ -5134,7 +5134,7 @@ var hideModal = function(event) {
 document.addEventListener('keydown', e => {
 	if (e.key === 'Escape') {
 		let menuShown = false;
-		for (const mentEl of mentEls)
+		for (const mentEl of menuEls)
 			if (mentEl.style.display != 'none') {
 				menuShown = true;
 				break;
