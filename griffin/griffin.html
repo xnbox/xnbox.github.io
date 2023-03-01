@@ -33,7 +33,7 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="unavailable_after: 1970-01-01">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="sha256" content="c40ca9e7527bc2a0fcdb1cbdcbf1c5357bdad3040c437915f40cc8938c8993d4">
+<meta name="sha256" content="d1ada08f2bcb5b16530def04ae8a87fef25bf00c5ea84f3673a244e55a7f66a0">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -957,7 +957,7 @@ Cyber Griffin Silhouette (optimized)
 								<a id="mnuCreateEmptyWallet" class="menu-item" style="display: none;">Create empty wallet</a>
 								<a id="mnuCreateWalletFromSource" class="menu-item">Create wallet from source…</a>
 								<div id="sepInstall" class="menu-separator" style="display: none;"></div>
-								<a id="mnuInstall" class="menu-item" style="display: none;">Install…</a>
+								<a id="mnuInstall" class="menu-item menu-item-disabled" style="display: none;">Install…</a>
 								<div id="sepRegister" class="menu-separator" style="display: none;"></div>
 								<a id="mnuRegister" class="menu-item" style="display: none;">Register…</a>
 								<a id="mnuUnregister" class="menu-item" style="display: none;">Unregister…</a>
@@ -1044,6 +1044,9 @@ function normalize(s) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Common client utils
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function isWeb() {
+	return window.location.protocol == 'https:' || window.location.protocol == 'http:';
+}
 
 function getHTML() {
 	let outerHTML = document.documentElement.outerHTML;
@@ -4608,15 +4611,15 @@ async function displayWallet() {
 		validityNotAfter = config.validityNotAfter;
 	}
 
-	if (window.location.protocol == 'file:')
-		downloadIcon.style.display = 'none';
-	else {
+	if (isWeb()) {
 		downloadIcon.style.display = 'flex';
 		downloadIcon.addEventListener('click', (e) => {
 			const fileName = window.location.href.split('/').pop().split('#')[0].split('?')[0];
 			downloadAsHtmlFile(fileName, DOC_CONTENT);
 	    });
-	}
+	} else
+		downloadIcon.style.display = 'none';
+
     const usrEncs = encryptedJson['usr'];
     hasUsers = usrEncs.length != 0;
     if (hasUsers)
@@ -4752,7 +4755,7 @@ async function displayWallet() {
 		menuLeft.style.display = 'none';
 	});
 
-	if (WAS_EMPTY) {
+	if (WAS_EMPTY && isWeb()) {
 		sepInstall.style.display = 'block';
 		mnuInstall.style.display = 'block';
 		mnuInstall.addEventListener('click', e => {
