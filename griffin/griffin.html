@@ -33,7 +33,7 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="unavailable_after: 1970-01-01">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="sha256" content="d1ada08f2bcb5b16530def04ae8a87fef25bf00c5ea84f3673a244e55a7f66a0">
+<meta name="sha256" content="20f461acbaa05a4b55d89f12ba26d4f0344dac467683590779e9dd24d537e311">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -154,6 +154,9 @@
 }
 
 html, body {
+	text-size-adjust: 100%;
+	tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
 	height: 100%;
 	padding: 0;
 	margin: 0;
@@ -386,6 +389,9 @@ main {
 	display: flex;
 	justify-content: space-between;
 	font-family: monospace;
+	font-variant: tabular-nums;
+	font-feature-settings: "zero";
+	font-variant: tabular-nums;
 	font-size: .7rem;
 	color: rgba(0, 0, 0, .6);
 }
@@ -437,6 +443,8 @@ a:hover.res-id {
 	padding-right: .3rem;
 	font-size: 1.1rem;
 	font-family: monospace;
+	font-variant: tabular-nums;
+	font-feature-settings: "zero";
 	font-weight: bold;
 	letter-spacing: .2rem;
 }
@@ -452,6 +460,8 @@ a:hover.res-id {
 	max-width: max-content;
 	word-break: break-all;
 	font-family: monospace;
+	font-variant: tabular-nums;
+	font-feature-settings: "zero";
 }
 
 .bordered-space {
@@ -528,12 +538,16 @@ a:hover.res-id {
     to { opacity: 1; }
 }
 
-.about-fields {
+.about-table {
 	max-width: min-content;
 	margin: auto;
 }
 
-.about-fields td {
+.about-table tr {
+	padding-bottom: 1.5rem;
+}
+
+.about-table td {
 	cursor: default;
 	font-size: .8rem;
 	vertical-align: top;
@@ -541,15 +555,18 @@ a:hover.res-id {
 	word-wrap: nowrap;
 }
 
-.about-fields td:nth-child(1) {
-	text-align: right;
+.about-fld-text {
+	text-align: left;
 	color: #008DCD;
 	font-weight: bold;
 }
-
-td:nth-child(2) {
+.about-fld-value {
+	text-align: left;
+	font-size: .8rem;
 	color: #222;
 	font-family: monospace;
+	font-variant: tabular-nums;
+	font-feature-settings: "zero";
 }
 
 input[type="file"] {
@@ -572,6 +589,8 @@ textarea {
 	display: inline-block;
 	border: 1px solid #ccc;
 	font-family: monospace;
+	font-variant: tabular-nums;
+	font-feature-settings: "zero";
 }
 
 input:not([type="file"]):not([type="checkbox"]):not([type="button"]):not([type="submit"]):focus,
@@ -913,16 +932,16 @@ Cyber Griffin Silhouette (optimized)
 									<br class="label">
 									<br class="label">
 									<hr>
-									<table class="about-fields">
+									<table class="about-table">
 										<tbody>
-											<tr title="Software version"><td>Ver:</td><td id="tdVersion"></td></tr>
-											<tr title="Client watermark"><td>WMK:</td><td id="tdWmk"></td></tr>
-											<tr title="Container identifier"><td>ID:</td><td id="tdUuid"></td></tr>
-											<tr title="Encrypted data SHA-256 hash"><td>Hash:</td><td id="tdSha256"></td></tr>
-											<tr title="Encrypted data size (in bytes)"><td>Size:</td><td id="tdSize"></td></tr>
-											<tr title="Document subject"><td>Subject:</td><td id="tdSubject"></td></tr>
-											<tr title="Document validity Not Before"><td>Validity Not Before:</td><td id="tdValidityNotBefore"></td></tr>
-											<tr title="Document validity Not After"><td>Validity Not After:</td><td id="tdValidityNotAfter"></td></tr>
+											<tr title="Software version"><td><div class="about-fld-text">Ver:</div><div id="tdVersion" class="about-fld-value"></div></td></tr>
+											<tr title="Client watermark"><td><div class="about-fld-text">WMK:</div><div id="tdWmk" class="about-fld-value"></div></td></tr>
+											<tr title="Container identifier"><td><div class="about-fld-text">ID:</div><div id="tdUuid" class="about-fld-value"></div></td></tr>
+											<tr title="Encrypted data SHA-256 hash"><td><div class="about-fld-text">Hash:</div><div id="tdSha256" class="about-fld-value"></div></td></tr>
+											<tr title="Encrypted data size (in bytes)"><td><div class="about-fld-text">Size:</div><div id="tdSize" class="about-fld-value"></div></td></tr>
+											<tr title="Document description"><td><div class="about-fld-text">Description:</div><div id="tdDescription" class="about-fld-value"></div></td></tr>
+											<tr title="Document validity Not Before"><td><div class="about-fld-text">Validity Not Before:</div><div id="tdValidityNotBefore" class="about-fld-value"></div></td></tr>
+											<tr title="Document validity Not After"><td><div class="about-fld-text">Validity Not After:</div><div id="tdValidityNotAfter" class="about-fld-value"></div></td></tr>
 										</tbody>
 									</table>
 					</div>
@@ -983,6 +1002,12 @@ Cyber Griffin Silhouette (optimized)
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Common utils
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getMimeFromDataUrl(dataUrl) {
+	const ind1 = dataUrl.indexOf(':');
+	const ind2 = dataUrl.indexOf(';');
+	return dataUrl.substring(ind1 + 1, ind2)
+}
 
 // https://stackoverflow.com/a/2117523
 function uuidv4() {
@@ -3711,7 +3736,7 @@ function parseXml(s) {
 			config: {
 					title: PRODUCT_NAME,
 					favicon: ICON_144X144_DATA_URL,
-					subject: '',
+					description: '',
 					validityNotBefore: '',
 					validityNotAfter: '',
 					remoteOptions: {},
@@ -3743,9 +3768,9 @@ function parseXml(s) {
 		if (favicon !== null)
 			json.config.favicon = favicon.trim();
 
-		const subject = node.getAttribute('subject');
-		if (subject !== null)
-			json.config.subject = subject.trim();
+		const description = node.getAttribute('description');
+		if (description !== null)
+			json.config.description = description.trim();
 
 		const validityNotBefore = node.getAttribute('validityNotBefore');
 		if (validityNotBefore !== null)
@@ -3993,7 +4018,7 @@ async function generate(xml, empty, download) {
 		tdSize.innerHTML = '';
 		tdVersion.innerHTML = '';
 		tdWmk.innerHTML = '';
-		tdSubject.innerHTML = '';
+		tdDescription.innerHTML = '';
 		tdValidityNotBefore.innerHTML = '';
 		tdValidityNotAfter.innerHTML = '';
 
@@ -4082,7 +4107,7 @@ async function generateEncryptedJson(json) {
     outJson.config['favicon'] = json.config['favicon'];
     outJson.config['stunUrls'] = json.config['stunUrls'];
     outJson.config['remoteOptions'] = json.config['remoteOptions'];
-    outJson.config['subject'] = json.config['subject'];
+    outJson.config['description'] = json.config['description'];
     outJson.config['validityNotBefore'] = json.config['validityNotBefore'];
     outJson.config['validityNotAfter'] = json.config['validityNotAfter'];
 
@@ -4600,13 +4625,13 @@ async function displayWallet() {
 	if (WAS_EMPTY) {
 		size = 0;
 		sha256 = ZERO_SHA_256;
-		subject = ZERO_SUBJECT;
+		description = ZERO_DOC_DESCRIPTION;
 		validityNotBefore = '';
 		validityNotAfter = '';
 	} else {
 		size = encryptedJsonStr.length;
 		sha256 = await digestMessage(encryptedJsonStr);
-		subject = config.subject;
+		description = config.description;
 		validityNotBefore = config.validityNotBefore;
 		validityNotAfter = config.validityNotAfter;
 	}
@@ -4634,11 +4659,6 @@ async function displayWallet() {
 
 	/* set favicon */
 	favicon.href = config.favicon;
-
-	let start_url;
-	let name;
-	let description;
-	let icon_data_url;
 
     let stunUrls = config['stunUrls'];
     let ip = '';
@@ -4774,7 +4794,7 @@ async function displayWallet() {
 		tdSha256.innerHTML = sha256.substring(0, 36) + '‏‏‎<br>‎' + sha256.substring(36);
 		tdSize.innerHTML = size;
 		tdWmk.innerHTML = wmk;
-		tdSubject.innerHTML = subject;
+		tdDescription.innerHTML = description;
 		tdValidityNotBefore.innerHTML = validityNotBefore;
 		tdValidityNotAfter.innerHTML = validityNotAfter;
 
@@ -5014,7 +5034,7 @@ const START_URL = 'https://xnbox.github.io' + INDEX_URL;
 
 const ZERO_UUID = '00000000-0000-0000-0000-000000000000';
 const ZERO_SHA_256 = '0000000000000000000000000000000000000000000000000000000000000000';
-const ZERO_SUBJECT = 'Empty container';
+const ZERO_DOC_DESCRIPTION = 'Empty container';
 
 const headEl = document.querySelector('head');
 const metaSha256El = headEl.querySelector('meta[name="sha256"]');
@@ -5126,7 +5146,32 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 	if('serviceWorker' in navigator)
 		navigator.serviceWorker.register('griffin-sw.js');
 
-setManifest(START_URL, PRODUCT_NAME, PRODUCT_NAME, ICON_144X144_DATA_URL);
+/* set manifest */
+let manifest = {
+		"name": encodeURIComponent(PRODUCT_NAME),
+		"short_name": encodeURIComponent(PRODUCT_NAME),
+		"start_url": encodeURI(START_URL),
+		"description": encodeURIComponent(PRODUCT_NAME),
+		"display": "standalone",
+		"theme_color": "DeepSkyBlue",
+		"background_color": "White",
+		"icons": [{
+			"src": encodeURI(ICON_144X144_DATA_URL),
+			"sizes": "144x144",
+			"type": getMimeFromDataUrl(ICON_144X144_DATA_URL)
+		}]
+	};
+
+let manifestStr = JSON.stringify(manifest);
+let hrefManifest = 'data:application/manifest+json,' + manifestStr;
+
+let linkManifestEl = headEl.querySelector('link[rel="manifest"]');
+if (linkManifestEl != null)
+	headEl.removeChild(linkManifestEl);
+linkManifestEl = document.createElement('link');
+linkManifestEl.setAttribute('rel', 'manifest');
+linkManifestEl.setAttribute('href', hrefManifest);
+headEl.appendChild(linkManifestEl);
 
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -5139,49 +5184,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 		}
 	});
 });
-
-function setManifest(start_url, name, description, icon_data_url) {
-	const ind1 = icon_data_url.indexOf(':');
-	const ind2 = icon_data_url.indexOf(';');
-	const type = icon_data_url.substring(ind1 + 1, ind2)
-
-	let manifest = {
-			"name" : encodeURIComponent(name),
-			"short_name" : encodeURIComponent(name),
-			"start_url" : encodeURI(start_url),
-			"description" : encodeURIComponent(description),
-			"display" : "standalone",
-			"theme_color" : "DeepSkyBlue",
-			"background_color" : "White",
-			"icons" : [{
-				"src" : encodeURI(icon_data_url),
-				"sizes" : "144x144",
-				"type" : type
-			}],
-			"file_handlers": [{
-			           "action": "/griffin,html",
-			           "name": name,
-			           "accept": {
-			               "text/xml": [".xml"]
-			           },
-			           "icons": [{
-			   				"src" : encodeURI(icon_data_url),
-							"sizes" : "144x144",
-							"type" : type
-						}]
-			}]
-		};
-	let manifestStr = JSON.stringify(manifest);
-	let hrefManifest = 'data:application/manifest+json,' + manifestStr;
-
-	let linkManifestEl = headEl.querySelector('link[rel="manifest"]');
-	if (linkManifestEl != null)
-		headEl.removeChild(linkManifestEl);
-	linkManifestEl = document.createElement('link');
-	linkManifestEl.setAttribute('rel', 'manifest');
-	linkManifestEl.setAttribute('href', hrefManifest);
-	headEl.appendChild(linkManifestEl);
-}
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Section: Main
@@ -5230,7 +5232,7 @@ const MIN_ENCRYPTED_JSON = {
 	config: {
 		title: PRODUCT_NAME,
 		favicon: ICON_144X144_DATA_URL,
-		subject: ZERO_SUBJECT,
+		description: ZERO_DOC_DESCRIPTION,
 		validityNotBefore: '',
 		validityNotAfter: '',
 		stunUrls :[],
@@ -5264,7 +5266,7 @@ let regCode = '';
 //
 let size;
 let sha256;
-let subject;
+let description;
 let validityNotBefore;
 let validityNotAfter;
 //
