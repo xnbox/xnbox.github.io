@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><!--
+<html lang="en"><!--
 	MIT License
 	
 	Copyright (c) 2023 xnbox team
@@ -35,7 +35,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Secure container">
 <meta name="theme-color" content="DeepSkyBlue">
-<meta name="sha256" content="b0ec53e1d6adb240d1d2cb031552d7c31bf696d9555e120ca67bb94cdb12de7b">
+<meta name="sha256" content="523c969eba24bf281dce7979913c548dfa8e91d05b30f8e43ad7580509543038">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -5159,19 +5159,26 @@ if (location.origin.startsWith('https') || location.origin.startsWith('http'))
 
 /* set manifest */
 let manifest = {
-		"name": encodeURIComponent(PRODUCT_NAME),
-		"short_name": encodeURIComponent(PRODUCT_NAME),
-		"start_url": encodeURI(START_URL),
-		"description": encodeURIComponent(PRODUCT_NAME),
-		"display": "standalone",
-		"theme_color": "DeepSkyBlue",
-		"background_color": "White",
-		"icons": [{
-			"src": encodeURI(ICON_144X144_DATA_URL),
-			"sizes": "144x144",
-			"type": getMimeFromDataUrl(ICON_144X144_DATA_URL)
-		}]
-	};
+	"name": encodeURIComponent(PRODUCT_NAME),
+	"short_name": encodeURIComponent(PRODUCT_NAME),
+	"start_url": encodeURI(START_URL),
+	"description": encodeURIComponent(PRODUCT_NAME),
+	"display": "standalone",
+	"theme_color": "DeepSkyBlue",
+	"background_color": "White",
+	"icons": [{
+		"src": encodeURI(ICON_144X144_DATA_URL),
+		"sizes": "144x144",
+		"type": getMimeFromDataUrl(ICON_144X144_DATA_URL)
+	},
+	{
+		"src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAAAXNSR0IArs4c6QAAA7xJREFUeF7t0wENACAQw0DeG+owDQk2enOwbp197l2CQJTAECC6vNqfAAEcIU2AAOn5lSeAD6QJECA9v/IE8IE0AQKk51eeAD6QJkCA9PzKE8AH0gQIkJ5feQL4QJoAAdLzK08AH0gTIEB6fuUJ4ANpAgRIz688AXwgTYAA6fmVJ4APpAkQID2/8gTwgTQBAqTnV54APpAmQID0/MoTwAfSBAiQnl95AvhAmgAB0vMrTwAfSBMgQHp+5QngA2kCBEjPrzwBfCBNgADp+ZUngA+kCRAgPb/yBPCBNAECpOdXngA+kCZAgPT8yhPAB9IECJCeX3kC+ECaAAHS8ytPAB9IEyBAen7lCeADaQIESM+vPAF8IE2AAOn5lSeAD6QJECA9v/IE8IE0AQKk51eeAD6QJkCA9PzKE8AH0gQIkJ5feQL4QJoAAdLzK08AH0gTIEB6fuUJ4ANpAgRIz688AXwgTYAA6fmVJ4APpAkQID2/8gTwgTQBAqTnV54APpAmQID0/MoTwAfSBAiQnl95AvhAmgAB0vMrTwAfSBMgQHp+5QngA2kCBEjPrzwBfCBNgADp+ZUngA+kCRAgPb/yBPCBNAECpOdXngA+kCZAgPT8yhPAB9IECJCeX3kC+ECaAAHS8ytPAB9IEyBAen7lCeADaQIESM+vPAF8IE2AAOn5lSeAD6QJECA9v/IE8IE0AQKk51eeAD6QJkCA9PzKE8AH0gQIkJ5feQL4QJoAAdLzK08AH0gTIEB6fuUJ4ANpAgRIz688AXwgTYAA6fmVJ4APpAkQID2/8gTwgTQBAqTnV54APpAmQID0/MoTwAfSBAiQnl95AvhAmgAB0vMrTwAfSBMgQHp+5QngA2kCBEjPrzwBfCBNgADp+ZUngA+kCRAgPb/yBPCBNAECpOdXngA+kCZAgPT8yhPAB9IECJCeX3kC+ECaAAHS8ytPAB9IEyBAen7lCeADaQIESM+vPAF8IE2AAOn5lSeAD6QJECA9v/IE8IE0AQKk51eeAD6QJkCA9PzKE8AH0gQIkJ5feQL4QJoAAdLzK08AH0gTIEB6fuUJ4ANpAgRIz688AXwgTYAA6fmVJ4APpAkQID2/8gTwgTQBAqTnV54APpAmQID0/MoTwAfSBAiQnl95AvhAmgAB0vMrTwAfSBMgQHp+5QngA2kCBEjPrzwBfCBNgADp+ZUngA+kCRAgPb/yBPCBNAECpOdXngA+kCZAgPT8yhPAB9IECJCeX3kC+ECaAAHS8ytPAB9IEyBAen7lHwhnGd9Jp/YHAAAAAElFTkSuQmCC",
+		"sizes": "144x144",
+		"type": "image/png",
+		"purpose": "maskable"
+	}
+	]
+};
 
 let manifestStr = JSON.stringify(manifest);
 let hrefManifest = 'data:application/manifest+json,' + manifestStr;
