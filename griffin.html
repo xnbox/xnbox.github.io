@@ -33,7 +33,7 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="unavailable_after: 1970-01-01">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="sha256" content="51914565491ea6565009757a1edf181acf876cfde51d656ba439d84515b32dfa">
+<meta name="sha256" content="de28899b522a7d75d04df39c70c73e2c9b08fc01c5f058e7be673b194467434a">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -985,8 +985,6 @@ Cyber Griffin Silhouette (optimized)
 				<div id="menuLeft" class="menu" style="display: none;">
 								<a id="mnuCreateEmptyWallet" class="menu-item" style="display: none;">Create empty wallet</a>
 								<a id="mnuCreateWalletFromSource" class="menu-item">Create wallet from source…</a>
-								<div id="sepInstall" class="menu-separator" style="display: none;"></div>
-								<a id="mnuInstall" class="menu-item menu-item-disabled" style="display: none;">Install…</a>
 								<div id="sepRegister" class="menu-separator" style="display: none;"></div>
 								<a id="mnuRegister" class="menu-item" style="display: none;">Register…</a>
 								<a id="mnuUnregister" class="menu-item" style="display: none;">Unregister…</a>
@@ -4009,10 +4007,7 @@ async function generate(xml, empty, download) {
 		btnSignIn.style.display = empty ? 'none' : 'flex';
 
 		downloadIcon.style.display = 'none';
-		mnuInstall.style.display = 'none';
 		mnuCreateEmptyWallet.style.display = 'none';
-		sepInstall.style.display = 'none';
-		mnuInstall.style.display = 'none';
 		sepRegister.style.display = 'none';
 		mnuRegister.style.display = 'none';
 		mnuUnregister.style.display = 'none';
@@ -4051,8 +4046,6 @@ async function generate(xml, empty, download) {
 				downloadAsHtmlFile(fileName, getHTML());
 			// restore
 			downloadIcon.style.display = savedDownloadIcon; 
-			sepInstall.style.display = WAS_EMPTY ? 'block' : 'none';
-			mnuInstall.style.display = WAS_EMPTY ? 'block' : 'none';
 			mnuCreateEmptyWallet.style.display = WAS_EMPTY ? 'none' : 'block';
 			integrityTestErrorMessage.style.display = savedIntegrityTestErrorMessage;
 			integrityTestOkMessage.style.display = savedIntegrityTestOkMessage;
@@ -4086,8 +4079,6 @@ async function generate(xml, empty, download) {
 						downloadAsHtmlFile(fileName, getHTML());
 					// restore
 					downloadIcon.style.display = savedDownloadIcon;
-					sepInstall.style.display = WAS_EMPTY ? 'block' : 'none';
-					mnuInstall.style.display = WAS_EMPTY ? 'block' : 'none';
 					mnuCreateEmptyWallet.style.display = WAS_EMPTY ? 'none' : 'block';
 					integrityTestErrorMessage.style.display = savedIntegrityTestErrorMessage;
 					integrityTestOkMessage.style.display = savedIntegrityTestOkMessage;
@@ -4785,18 +4776,6 @@ async function displayWallet() {
 		menuLeft.style.display = 'none';
 	});
 
-	if (WAS_EMPTY && isWeb()) {
-		sepInstall.style.display = 'block';
-		mnuInstall.style.display = 'block';
-		mnuInstall.addEventListener('click', e => {
-			if (!mnuInstall.classList.contains('menu-item-disabled'))
-				install();
-		});
-	} else {
-		sepInstall.style.display = 'none';
-		mnuInstall.style.display = 'none';
-	}
-
 	mnuAbout.addEventListener('click', (e)=> {
 		logo.src = ICON_144X144_DATA_URL;
 		tdVersion.innerHTML = PRODUCT_VERSION;
@@ -4844,19 +4823,6 @@ async function displayWallet() {
 			unregisterDialog.close();
 		});
 	}
-}
-
-async function install() {
-	menuLeft.style.display = 'none';
-	if (beforeinstallpromptEvent !== undefined) {
-		beforeinstallpromptEvent.prompt();
-		const { outcome } = await beforeinstallpromptEvent.userChoice;
-		if (outcome === 'accepted') {
-			beforeinstallpromptEvent = undefined;
-			mnuInstall.classList.add('menu-item-disabled');
-		}
-	} else
-		mnuInstall.classList.add('menu-item-disabled');
 }
 
 function clearLocalStorage() {
@@ -5230,11 +5196,10 @@ headEl.appendChild(linkManifestEl);
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', (e) => {
 	beforeinstallpromptEvent = e;
-	mnuInstall.classList.remove('menu-item-disabled');
 	e.userChoice.then(function(choiceResult) {
 		if (choiceResult.outcome === 'accepted') {
 			beforeinstallpromptEvent = undefined;
-			mnuInstall.classList.add('menu-item-disabled');
+			console.info('INFO: PWA installed')
 		}
 	});
 });
