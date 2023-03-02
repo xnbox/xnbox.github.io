@@ -33,7 +33,7 @@
 <meta name="robots" content="noarchive">
 <meta name="robots" content="unavailable_after: 1970-01-01">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="sha256" content="84d3380427c99a1914512360e6d9f8fa062df0d25a22718dceaa9d15e23a00a4">
+<meta name="sha256" content="8369fd6fa72a5bab8f26329ec5bda7d5f16bff2c3af4832b834746d5d1abec8e">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -4637,7 +4637,7 @@ async function displayWallet() {
 		validityNotAfter = config.validityNotAfter;
 	}
 
-	if (isWeb() && !IS_STANDALONE) {
+	if (isWeb() || IS_STANDALONE) {
 		downloadIcon.style.display = 'flex';
 		downloadIcon.addEventListener('click', (e) => {
 			const fileName = window.location.href.split('/').pop().split('#')[0].split('?')[0];
@@ -5007,7 +5007,6 @@ const PRODUCT_NAME = "Griffin";
 const ICON_144X144_DATA_URL = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(logoIcon));
 const START_URL = 'https://xnbox.github.io' + INDEX_URL;
 const IS_STANDALONE = window.matchMedia('(display-mode: standalone)').matches;
-alert(IS_STANDALONE);
 const ZERO_UUID = '00000000-0000-0000-0000-000000000000';
 const ZERO_SHA_256 = '0000000000000000000000000000000000000000000000000000000000000000';
 const ZERO_DOC_DESCRIPTION = 'Empty container';
@@ -5071,7 +5070,7 @@ window.addEventListener('previous', function(){
 	for (const menuEl of menuEls)
 		if (menuEl.style.display != 'none') {
 			menuEl.style.display = 'none'
-			break;
+			return;
 		}
 	//
 	for (const dialogEl of dialogsEls)
@@ -5082,24 +5081,13 @@ window.addEventListener('previous', function(){
 		    clearRegisterDialog();
 			blockDialog.close();
 			clearBlockDialog();
-			break;
+			return;
 		}
-
-// 	aboutDialog.close();
-
-// 	decryptDialog.close();
-// 	clearDecryptDialog();
-
-// 	loginDialog.close();
-// 	clearLoginDialog();
-
-//     registerDialog.close();
-//     clearRegisterDialog();
-
-// 	unregisterDialog.close();
-
-// 	blockDialog.close();
-// 	clearBlockDialog();
+	//
+	for (const statusMessageEl of statusMessagesEls) {
+		statusMessageEl.style.display = 'none';
+		statusMessageMargin.style.display = 'none';
+	}
 }, false);
  
 var showModal = function() {
