@@ -35,7 +35,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Secure container">
 <meta name="theme-color" content="DeepSkyBlue">
-<meta name="sha256" content="d9b43b45fbdf7090f7ed295e4e71ca6a851ed281ea2016e7b0e0a2b91ad338b8">
+<meta name="sha256" content="afb402ffbc6ef53b15ac1faa67f32831392197c486926cca287f33149cb90762">
+<meta name="publicKey" content="null">
 <meta name="signature" content="">
 <meta name="uuid" content="00000000-0000-0000-0000-000000000000">
 <meta name="size" content="0">
@@ -111,8 +112,7 @@
   content: "\ef08";
 }
 
-.icofont-navigation-menu,
-.icofont-download {
+.icon-button { 
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -123,8 +123,7 @@
 	color: #aaa;
 }
 
-.icofont-navigation-menu:hover,
-.icofont-download:hover {
+.icon-button:hover {
 	cursor: pointer;
 	color: #fff;
 	background-color: rgba(256, 256, 256, .08);
@@ -431,7 +430,7 @@ a:hover.res-id {
 .res-content-root {
 	display: flex;
 	flex-direction: column;
-	gap: .7rem;
+	gap: .6rem;
 }
 
 .totp-code {
@@ -491,23 +490,6 @@ a:hover.res-id {
 .label {
 	user-select: none;
 	user-drag: none;
-}
-
-.checkbox-label {
-	user-select: none;
-	user-drag: none;
-	cursor: pointer;
-	white-space: nowrap;
-	max-width: min-content;
-}
-
-.checkbox-holder {
-	display: flex;
-	gap: .2rem;
-	width: 100%;
-	justify-content: flex-start;
-	font-size: 1rem;
-	color: #222;
 }
 
 .dialogLabel {
@@ -592,11 +574,29 @@ input[type="file"] {
 }
 
 input[type="checkbox"] {
-	margin-top: .5rem;
+	margin-top: 0;
 	margin-left: 0;
 }
 
 input[type="checkbox"] + label {
+	user-select: none;
+	user-drag: none;
+	cursor: pointer;
+	white-space: nowrap;
+	max-width: min-content;
+}
+
+.checkbox-holder {
+	display: flex;
+	gap: .2rem;
+	width: 100%;
+	justify-content: flex-start;
+	font-size: .9rem;
+	line-height: .9rem;
+	color: #111;
+}
+
+.checkbox-holder-margin {
 	margin-top: .5rem;
 }
 
@@ -796,7 +796,8 @@ Cyber Griffin Silhouette (optimized)
 </svg><!--
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -->
-				<input type="file" id="inputFileEl" accept=".xml">
+				<input type="file" id="inputXmlSourceFileEl" accept=".xml">
+				<input type="file" id="inputWalletFileEl" accept=".html">
 
 				<!--
 					*** Sign in Dialog ***
@@ -816,7 +817,7 @@ Cyber Griffin Silhouette (optimized)
 							<input id="userInput" type="text" name="username" placeholder="Enter Username" required="" autocomplete="off" oninvalid="this.setCustomValidity('Username can not be empty!')" oninput="this.setCustomValidity('');">
 							<label for="loginPasswordInput" class="label dialogLabel">Password:</label>
 							<input id="loginPasswordInput" name="password" type="password" placeholder="Enter Password" autocomplete="off">
-							<span class="checkbox-holder"><input id="loginShowPassword" type="checkbox" onchange="togglePassword(this)"><label for="loginShowPassword" class="checkbox-label">Show password</label></span>
+							<span class="checkbox-holder checkbox-holder-margin"><input id="loginShowPassword" type="checkbox" onchange="togglePassword(this)"><label for="loginShowPassword" class="checkbox-label">Show password</label></span>
 					</div>
 					<div class="buttonGroup">
 						<br class="label"> <br class="label"> <br class="label"> <br class="label">
@@ -840,15 +841,15 @@ Cyber Griffin Silhouette (optimized)
 								<div id="decryptErrorMsg" class="label errorMsg" style="visibility: hidden;">Bad credentials. Decrypt failed!</div>
 								<label id="decryptPasswordInputLabel" for="decryptPasswordInput" class="label dialogLabel">Password:</label>
 								<input id="decryptPasswordInput" name="password" type="password" placeholder="Enter Password" autocomplete="off">
-								<span class="checkbox-holder">
+								<span class="checkbox-holder checkbox-holder-margin">
 									<input id="decryptShowPassword" type="checkbox" onchange="togglePassword(this)"><label id="decryptShowPasswordLabel" for="decryptShowPassword" class="checkbox-label">Show password</label>
 								</span>
 								<br class="label">
-								<label id="vernamKeyTextAreaLabel" for="vernamKeyTextArea" class="label dialogLabel">Vernam key (XOR pad):</label>
-								<textarea id="vernamKeyTextArea" placeholder="Enter Vernam key (XOR pad)" autocomplete="off" style="-webkit-text-security: disc;"></textarea>
-								<span class="checkbox-holder">
+								<label id="vernamKeyTextAreaLabel" for="vernamKeyTextArea" class="label dialogLabel">XOR pad:</label>
+								<textarea id="vernamKeyTextArea" placeholder="Enter XOR pad" autocomplete="off" style="-webkit-text-security: disc;"></textarea>
+								<span class="checkbox-holder checkbox-holder-margin">
 									<input id="decryptShowVernamKey" type="checkbox" onchange="togglePassword(this)">
-									<label id="decryptShowVernamKeyLabel" for="decryptShowVernamKey" class="checkbox-label">Show Vernam Key (XOR pad)</label>
+									<label id="decryptShowVernamKeyLabel" for="decryptShowVernamKey" class="checkbox-label">Show XOR pad</label>
 								</span>
 					</div>
 					<div class="buttonGroup">
@@ -919,7 +920,7 @@ Cyber Griffin Silhouette (optimized)
 								<br class="label">
 								<label for="registerPasswordInput" class="label dialogLabel required">Registration Code:</label>
 								<input id="registerPasswordInput" name="password" type="password" placeholder="Enter registration code" required="" autocomplete="off" oninvalid="this.setCustomValidity('Registration code can not be empty!')" oninput="this.setCustomValidity('');">
-								<span class="checkbox-holder">
+								<span class="checkbox-holder checkbox-holder-margin">
 									<input id="registerShowPassword" type="checkbox" onchange="togglePassword(this)">
 									<label for="registerShowPassword" class="checkbox-label">Show registration code</label>
 								</span>
@@ -967,7 +968,7 @@ Cyber Griffin Silhouette (optimized)
 				</dialog>
 				<header>
 								<div class="header-left">
-												<span id="menuIcon" class="icofont-navigation-menu"></span>
+												<span id="menuIcon" class="icon-button icofont-navigation-menu"></span>
 												<div id="appName"></div>
 								</div>
 								<div class="header-right">
@@ -979,7 +980,7 @@ Cyber Griffin Silhouette (optimized)
 														<span class="icofont-user"></span>
 														<span id="userNameText"></span>
 												</div>
-												<span id="downloadIcon" class="icofont-download" title="Download" style="display: none;"></span>
+												<span id="downloadIcon" class="icon-button icofont-download" title="Download" style="display: none;"></span>
 								</div>
 								<div id="integrityTestOkMessage" class="status-message" style="display: none;">Integrity test passed.<span class="icofont-close-line  close-message-icon" title="Close message"></span></div>
 								<div id="integrityTestErrorMessage" class="status-message" style="display: none;">Integrity test failed!<span class="icofont-close-line close-message-icon" title="Close message"></span></div>
@@ -988,9 +989,12 @@ Cyber Griffin Silhouette (optimized)
 				<div id="menuLeft" class="menu" style="display: none;">
 								<a id="mnuCreateEmptyWallet" class="menu-item" style="display: none;">Create empty wallet</a>
 								<a id="mnuCreateWalletFromSource" class="menu-item">Create wallet from source…</a>
+								<a id="mnuVerifyWallet" class="menu-item">Verify wallet…</a>
 								<div id="sepRegister" class="menu-separator" style="display: none;"></div>
 								<a id="mnuRegister" class="menu-item" style="display: none;">Register…</a>
 								<a id="mnuUnregister" class="menu-item" style="display: none;">Unregister…</a>
+								<div id="sepUpdate" class="menu-separator"></div>
+								<a id="mnuUpdate" class="menu-item" style="display: none;"><span class="menu-icon icofont-download"></span>Update</a>
 								<div id="sepAbout" class="menu-separator"></div>
 								<a id="mnuAbout" class="menu-item">About GRIFFIN…</a>
 				</div>
@@ -1080,12 +1084,14 @@ function normalize(s) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Common client utils
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-function isWeb() {
-	return window.location.protocol == 'https:' || window.location.protocol == 'http:';
+function isNeedDownloadButton() {
+	return window.location.protocol == 'https:' || window.location.protocol == 'http:' || IS_STANDALONE;
 }
 
-function getHTML() {
-	let outerHTML = document.documentElement.outerHTML;
+function getHTML(doc) {
+	if (doc === undefined)
+		doc = document;
+	let outerHTML = doc.documentElement.outerHTML;
 	outerHTML = '<!DOCTYPE html>\n' + outerHTML;
 	return outerHTML.trim();
 }
@@ -3540,19 +3546,19 @@ TOTP.prototype = {
 // 	});
 // }
 
-async function verifyMsg(keyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, hashAlg, pemPublicKey, pemSignature, message, callback) {
-	importPublicKey(keyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pemPublicKey).then(async publicKey => {
-		const signature = pem2Ab(pemSignature, `${algName} ${hashAlg} SIGNATURE`);
+async function verifyMsg(publicKeyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, signatureHashAlg, pemPublicKey, pemSignature, message, callback) {
+	importPublicKey(publicKeyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pemPublicKey).then(async publicKey => {
+		const signature = pem2Ab(pemSignature, `${algName} ${signatureHashAlg} SIGNATURE`);
 		const valid = await verifyMessage(message, publicKey, signature);
 		callback(valid);
 	});
 }
 
-async function verifyMessage(algName, hashAlg, publicKey, signature, message) {
+async function verifyMessage(algName, signatureHashAlg, publicKey, signature, message) {
 	return await window.crypto.subtle.verify(
 		{
 		  name: algName,
-		  hash: hashAlg
+		  hash: signatureHashAlg
 		},
 		publicKey,
 		signature,
@@ -3561,30 +3567,41 @@ async function verifyMessage(algName, hashAlg, publicKey, signature, message) {
 }
 
 
-function importPublicKey(keyFormat = 'spki', algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pem) {
+async function importPublicKey(keyFormat = 'spki', algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pem) {
 	const alg = createKeyAlg(algName, algEcNamedCurve, algRsaModulusLength, algRsaHash);
-	return window.crypto.subtle.importKey(
+	return await window.crypto.subtle.importKey(
 		keyFormat, // E.g.: "spki",
-		pem2Ab(pem, `${algName} PUBLIC KEY`),
+		base64ToBin(pem),
 		alg,
 		true,
 		["verify"]
 	);
 }
 
-async function signMsg(keyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, hashAlg, pemPrivateKey, message, callback) {
-	importPrivateKey(keyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pemPrivateKey).then(async privateKey => {
-		const signature = await signMessage(algName, hashAlg, privateKey, message);
+// function importPublicKey(publicKeyFormat = 'spki', algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pem) {
+// 	const alg = createKeyAlg(algName, algEcNamedCurve, algRsaModulusLength, algRsaHash);
+// 	return window.crypto.subtle.importKey(
+// 		publicKeyFormat, // E.g.: "spki",
+// 		pem2Ab(pem, `${algName} PUBLIC KEY`),
+// 		alg,
+// 		true,
+// 		["verify"]
+// 	);
+// }
+
+async function signMsg(privateKeyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, signatureHashAlg, pemPrivateKey, message, callback) {
+	importPrivateKey(privateKeyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pemPrivateKey).then(async privateKey => {
+		const signature = await signMessage(algName, signatureHashAlg, privateKey, message);
 		const pemSignature =  binToBase64(signature);
 		callback(pemSignature);
 	});
 }
 
-async function signMessage(algName, hashAlg, privateKey, message) {
+async function signMessage(algName, signatureHashAlg, privateKey, message) {
 	return await window.crypto.subtle.sign(
 		{
 			name: algName, // E.g.: "ECDSA"
-			hash: hashAlg, // E.g.: "SHA-384"
+			hash: signatureHashAlg, // E.g.: "SHA-384"
 		},
 		privateKey,
 		new TextEncoder().encode(message)
@@ -3655,11 +3672,11 @@ function createKeyAlg(algName, algEcNamedCurve, algRsaModulusLength, algRsaHash)
 	return alg;
 }
 
-function importPrivateKey(keyFormat = 'pkcs8', algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pem) {
+function importPrivateKey(privateKeyFormat = 'pkcs8', algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, pem) {
 	const alg = createKeyAlg(algName, algEcNamedCurve, algRsaModulusLength, algRsaHash);
 	return window.crypto.subtle.importKey(
-		keyFormat, // E.g.: "pkcs8"
-		pem2Ab(pem, `${algName} PRIVATE KEY`),
+		privateKeyFormat, // E.g.: "pkcs8"
+		base64ToBin(pem),
 		alg,
 		true,
 		["sign"]
@@ -3679,6 +3696,26 @@ function importPrivateKey(keyFormat = 'pkcs8', algName, algEcNamedCurve, algRsaM
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Section: Fetch remote server
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+ * Events:
+ *
+ * get-update
+ */
+async function fetchUpdate(url, options) {
+	options['cache'] = 'no-store';
+	options['method'] = 'HEAD';
+	return fetch(url, options).then(response => {
+		if (response.status >= 400) {
+			console.log(`WARNING! Logging problem. Bad HTTP status`);
+			return false;
+		}
+		return true;
+	}).catch(error => {
+		console.log(`WARNING! Logging problem. ${error.message}`);
+		return false;
+	});
+}
 
 /*
  * Events:
@@ -3707,7 +3744,7 @@ async function fetchRemoteSecret(url, options) {
 			console.log(`WARNING! Remote key ignored. Bad HTTP status`);
 			return '';
 		}
-		return response.text();
+		return response.text().trim();
 	})
 	.catch(error => {
 		console.log(`WARNING! Remote key ignored. ${error.message}`);
@@ -3734,15 +3771,89 @@ async function fetchDisableUserProfile(url, options) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Section: Integrity verification test
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function integrityVerificationTest(html, callbackOk, callbackError) {
+	const publicKeyFormat = 'spki';
+	const algName = 'ECDSA';
+	const algEcNamedCurve = 'P-384';
+	const algRsaModulusLength = undefined;
+	const algRsaHash = undefined;
+	const signatureHashAlg = 'SHA-384';
+
+	const doc = new DOMParser().parseFromString(html, "text/html");
+
+	const headEl = doc.querySelector('head');
+	const metaSha256El = headEl.querySelector('meta[name="sha256"]');
+	const metaPublicKeyEl = headEl.querySelector('meta[name="publicKey"]');
+	const metaSignatureEl = headEl.querySelector('meta[name="signature"]');
+
+	const docDigest = metaSha256El.getAttribute('content');
+	const signatureBase64 = metaSignatureEl.getAttribute('content');
+	const publicKeyBase64 = metaPublicKeyEl.getAttribute('content');
+
+	metaSha256El.setAttribute('content', '');
+
+	digestMessage(getHTML(doc))
+	.then(digest => {
+		console.log(digest);
+		console.log(docDigest);
+		const digestOk = digest == docDigest;
+		if (!digestOk)
+			throw new Error('ERROR: Digest verification failed');
+	})
+	.then(() => {
+		if (signatureBase64 == '')
+			return;
+		const alg = createKeyAlg(algName, algEcNamedCurve, algRsaModulusLength, algRsaHash);
+		
+		return window.crypto.subtle.importKey(
+				publicKeyFormat, // E.g.: "spki",
+				base64ToBin(publicKeyBase64),
+				alg,
+				true,
+				["verify"]
+			);
+	})
+	.then(publicKey => {
+		if (signatureBase64 == '')
+			return true;
+		metaSignatureEl.setAttribute('content', '');
+		metaSha256El.setAttribute('content', '');
+		const valid = window.crypto.subtle.verify(
+				{
+				  name: algName,
+				  hash: signatureHashAlg
+				},
+				publicKey,
+				base64ToBin(signatureBase64),
+				new TextEncoder().encode(getHTML(doc))
+		);
+		if (!valid)
+			throw new Error('ERROR: Signature verification failed');
+	})
+	.then(()=>{
+		callbackOk();
+	})
+	.catch(error => {
+		console.error(error);
+		callbackError();
+	});
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Section: Parse source XML file and generate HTML file
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function parseXml(s) {
-		const xml = (new DOMParser()).parseFromString(s, "text/xml");
-		const parser = new DOMParser();
-		const contextNode = parser.parseFromString(s, "text/xml");
+		const xml = new DOMParser().parseFromString(s, "text/xml");
+ 		//const parser = new DOMParser();
+ 		//const contextNode = parser.parseFromString(s, "text/xml");
 		const xpEvaluator = new XPathEvaluator();
-		const nsResolver = xpEvaluator.createNSResolver(contextNode.ownerDocument === null ? contextNode.documentElement : contextNode.ownerDocument.documentElement);
+		//const nsResolver = xpEvaluator.createNSResolver(contextNode.ownerDocument === null ? contextNode.documentElement : contextNode.ownerDocument.documentElement);
+		const nsResolver = xpEvaluator.createNSResolver(xml.ownerDocument === null ? xml.documentElement : xml.ownerDocument.documentElement);
+
 		const json = {
 			config: {
 					title: PRODUCT_NAME,
@@ -3752,12 +3863,14 @@ function parseXml(s) {
 					validityNotAfter: '',
 					remoteOptions: {},
 					privateKey: null,
-					keyFormat: null,
+					privateKeyFormat: null,
+					publicKey: null,
+					publicKeyFormat: null,
 					algName: null,
 					algEcNamedCurve: null,
 					algRsaModulusLength: null,
 					algRsaHash: null,
-					hashAlg: null,
+					signatureHashAlg: null,
 					stunUrls: [],
 					attributes: []
 				},
@@ -3797,17 +3910,33 @@ function parseXml(s) {
 			json.config.stunUrls.push(...stunUrls);
 		}
 
-		const privateKeyElements = node.getElementsByTagName('privateKey');
-		if (privateKeyElements.length != 0) {
-			const privateKeyElement = privateKeyElements[0];
-
-			json.config.privateKey = privateKeyElement.textContent.trim();
-			json.config.keyFormat = privateKeyElement.getAttribute('keyFormat');
-			json.config.algName = privateKeyElement.getAttribute('algName');
-			json.config.algEcNamedCurve = privateKeyElement.getAttribute('algEcNamedCurve');
-			json.config.algRsaModulusLength = privateKeyElement.getAttribute('algRsaModulusLength');
-			json.config.algRsaHash = privateKeyElement.getAttribute('algRsaHash');
-			json.config.hashAlg = privateKeyElement.getAttribute('hashAlg');
+		const signatureElements = node.getElementsByTagName('signature');
+		if (signatureElements.length != 0) {
+			const signatureElement = signatureElements[0];
+			json.config.signatureHashAlg = signatureElement.getAttribute('hashAlg');
+			//
+			const keyPairElements = signatureElement.getElementsByTagName('keyPair');
+			if (keyPairElements.length != 0) {
+				const keyPairElement = keyPairElements[0];
+				json.config.algName = keyPairElement.getAttribute('algName');
+				json.config.algEcNamedCurve = keyPairElement.getAttribute('algEcNamedCurve');
+				json.config.algRsaModulusLength = keyPairElement.getAttribute('algRsaModulusLength');
+				json.config.algRsaHash = keyPairElement.getAttribute('algRsaHash');
+				//
+				const privateKeyElements = keyPairElement.getElementsByTagName('privateKey');
+				if (privateKeyElements.length != 0) {
+					const privateKeyElement = privateKeyElements[0];
+					json.config.privateKey = privateKeyElement.textContent.trim();
+					json.config.privateKeyFormat = privateKeyElement.getAttribute('keyFormat');
+				}
+				//
+				const publicKeyElements = keyPairElement.getElementsByTagName('publicKey');
+				if (publicKeyElements.length != 0) {
+					const publicKeyElement = publicKeyElements[0];
+					json.config.publicKey = publicKeyElement.textContent.trim();
+					json.config.publicKeyFormat = publicKeyElement.getAttribute('keyFormat');
+				}
+			}
 		}
 
 		xpathResult = xml.evaluate('wallet/attributes/*', xml, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
@@ -3955,30 +4084,64 @@ function attributesValuesToString(configAttributes, attributes) {
 		await generate(xml, true, true);
 	}
 
-	function handleFileSelect(event) {
-		inputFileEl.removeEventListener('change', handleFileSelect);
+	function handleXmlSourceFileSelect(event) {
+		inputXmlSourceFileEl.removeEventListener('change', handleXmlSourceFileSelect);
 		const reader = new FileReader()
-		reader.onload = handleFileLoad;
+		reader.onload = handleXmlSourceFileLoad;
 		xmlFile = event.target.files[0];
-		console.info(`INFO: Process source file: ${xmlFile.name} Last modified (UNIX Time): ${xmlFile.lastModified}`);
+		console.info(`INFO: Process file: ${xmlFile.name} Last modified (UNIX Time): ${xmlFile.lastModified}`);
 		reader.readAsText(xmlFile);
-		inputFileEl.value = ''; // https://stackoverflow.com/questions/9155136/chrome-file-upload-bug-on-change-event-wont-be-executed-twice-with-the-same-fi
+		inputXmlSourceFileEl.value = ''; // https://stackoverflow.com/questions/9155136/chrome-file-upload-bug-on-change-event-wont-be-executed-twice-with-the-same-fi
 	}
 
-	async function handleFileLoad(event) {
+	async function handleXmlSourceFileLoad(event) {
 		xml = event.target.result;
 		await generate(xml, false, true);
 	}
 
-	async function getTheFile() {
-		inputFileEl.addEventListener('change', handleFileSelect);
-		inputFileEl.click();
+	async function getXmlSourceFile() {
+		inputXmlSourceFileEl.addEventListener('change', handleXmlSourceFileSelect);
+		inputXmlSourceFileEl.click();
 	}
 
+	function handleWalletFileSelect(event) {
+		inputWalletFileEl.removeEventListener('change', handleWalletFileSelect);
+		const reader = new FileReader()
+		reader.onload = handleWalletFileLoad;
+		const htmlFile = event.target.files[0];
+		console.info(`INFO: Process file: ${htmlFile.name} Last modified (UNIX Time): ${htmlFile.lastModified}`);
+		reader.readAsText(htmlFile);
+		inputWalletFileEl.value = ''; // https://stackoverflow.com/questions/9155136/chrome-file-upload-bug-on-change-event-wont-be-executed-twice-with-the-same-fi
+	}
+
+	async function handleWalletFileLoad(event) {
+		const html = event.target.result;
+		integrityVerificationTest(html,
+		() => {
+			alert('OK');
+		},
+		() => {
+			alert('FAIL');
+		});
+		//await generate(xml, false, true);
+	}
+
+	async function getWalletFile() {
+		inputWalletFileEl.addEventListener('change', handleWalletFileSelect);
+		inputWalletFileEl.click();
+	}
+
+	
 async function generate(xml, empty, download) {
 		const json = parseXml(xml);
 
-		let encryptedJson = await generateEncryptedJson(json);
+		// generate
+		const generatedUuid = empty ? ZERO_UUID : uuidv4();
+		const generatedStandardKey = new TextEncoder().encode(generatedUuid);;
+		const encryptedJson = await generateEncryptedJson(json, generatedStandardKey);
+		const encryptedJsonStr = empty ? '' : JSON.stringify(encryptedJson);
+		const generatedSha256 = empty ? ZERO_SHA_256 : await digestMessage(encryptedJsonStr);
+		const generatedSize = encryptedJsonStr.length;
 
 		// save
 		const savedUuid = metaContainerUuidEl.getAttribute('content');
@@ -3988,20 +4151,16 @@ async function generate(xml, empty, download) {
 		const wasLogIn = userNameText.textContent != '';
 		const savedUserName = userNameText.textContent;
 		const savedMetaSignature = metaSignatureEl.getAttribute('content');
+		const savedMetaPublicKey = metaPublicKeyEl.getAttribute('content');
 		const savedIntegrityTestErrorMessage = integrityTestErrorMessage.style.display;
 		const savedIntegrityTestOkMessage = integrityTestOkMessage.style.display;
-
 		const savedDownloadIcon = downloadIcon.style.display;
 
-		// generate
-		const encryptedJsonStr = empty ? '' : JSON.stringify(encryptedJson);
-		const generatedSha256 = empty ? ZERO_SHA_256 : await digestMessage(encryptedJsonStr);
-		const generatedSize = encryptedJsonStr.length;
-		const generatedUuid = empty ? ZERO_UUID : uuidv4();
-
+		// put
 		metaContainerUuidEl.setAttribute('content', generatedUuid);
 		metaEncryptedDataSizeEl.setAttribute('content', generatedSize);
 		metaSignatureEl.setAttribute('content', '');
+		metaPublicKeyEl.setAttribute('content', json.config.publicKey);
 		jsonHolder.textContent =  encryptedJsonStr;
 		inactivityMessage.style.display = 'none';
 		integrityTestOkMessage.style.display = 'none';
@@ -4064,17 +4223,18 @@ async function generate(xml, empty, download) {
 				btnSignIn.style.display = WAS_EMPTY ? 'none' : 'flex';
 			metaSha256El.setAttribute('content', DOC_DIGEST);
 			metaSignatureEl.setAttribute('content', savedMetaSignature);
+			metaPublicKeyEl.setAttribute('content', savedMetaPublicKey);
 		} else {
-			const keyFormat = json.config.keyFormat;
+			const privateKeyFormat = json.config.privateKeyFormat;
 			const algName   = json.config.algName;
 			const algEcNamedCurve  = json.config.algEcNamedCurve;
 			const algRsaModulusLength = json.config.algRsaModulusLength;
 			const algRsaHash = json.config.algRsaHash;
-			const hashAlg = json.config.hashAlg; 
+			const signatureHashAlg = json.config.signatureHashAlg;
 
 			metaSha256El.setAttribute('content', '');
 			metaSignatureEl.setAttribute('content', '');
-			await signMsg(keyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, hashAlg, pemPrivateKey, getHTML(), (pemSignature) => {
+			await signMsg(privateKeyFormat, algName, algEcNamedCurve, algRsaModulusLength, algRsaHash, signatureHashAlg, pemPrivateKey, getHTML(), (pemSignature) => {
 				metaSignatureEl.setAttribute('content', pemSignature);
 				digestMessage(getHTML()).then(digest => {
 					metaSha256El.setAttribute('content', digest);
@@ -4097,6 +4257,7 @@ async function generate(xml, empty, download) {
 						btnSignIn.style.display = WAS_EMPTY ? 'none' : 'flex';	
 					metaSha256El.setAttribute('content', DOC_DIGEST);
 					metaSignatureEl.setAttribute('content', savedMetaSignature);
+					metaPublicKeyEl.setAttribute('content', savedMetaPublicKey);
 					});
 			});
 		}
@@ -4105,7 +4266,7 @@ async function generate(xml, empty, download) {
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async function generateEncryptedJson(json) {
+async function generateEncryptedJson(json, standardKey) {
     const outJson = JSON.parse(MIN_ENCRYPTED_JSON_STR);
     outJson.config['title'] = json.config['title'];
     outJson.config['favicon'] = json.config['favicon'];
@@ -4119,7 +4280,7 @@ async function generateEncryptedJson(json) {
 	//
     for (const [resourceId, resource] of Object.entries(json['resources'])) {
         const id = bs2s(getRandomBytes(ID_LENGTH));
-        resource['resAesKey'] = bs2s(resource['users'] === undefined ? STANDARD_KEY : getRandomBytes(KEY_LENGTH));
+        resource['resAesKey'] = bs2s(resource['users'] === undefined ? standardKey : getRandomBytes(KEY_LENGTH));
 		//
         const resourcePassword = resource['password'];
         let resEntryEncrypted = resourcePassword !== undefined;
@@ -4135,7 +4296,7 @@ async function generateEncryptedJson(json) {
         if (resEntryVernamed) {
         	resourceVernamKey = normalize(resourceVernamKey);
         	if(data.length > resourceVernamKey)
-        		alert(`Error: Vernam key too short, required min: ${data.length}`);
+        		alert(`Error: XOR pad too short, required min: ${data.length}`);
         	else {
         		if (resourceVernamKey.length > data.length)
         			resourceVernamKey = resourceVernamKey.substring(0, data.length);
@@ -4211,7 +4372,7 @@ function buildPassword(userName, userPassword, userAttributes, userHash, userReg
     	userIp = '';
     if (remoteSecret === undefined || remoteSecret === null)
     	remoteSecret = '';
-    console.log((userPassword.trim() + '\0' + userAttributes + '\0' + userName.trim() + '\0' + userIp.trim() + '\0' + userHash.trim() + '\0' + userRegCode.trim() + '\0' + remoteSecret));
+    //console.log((userPassword.trim() + '\0' + userAttributes + '\0' + userName.trim() + '\0' + userIp.trim() + '\0' + userHash.trim() + '\0' + userRegCode.trim() + '\0' + remoteSecret));
 	return new TextEncoder().encode(userPassword.trim() + '\0' + userAttributes + '\0' + userName.trim() + '\0' + userIp.trim() + '\0' + userHash.trim() + '\0' + userRegCode.trim() + '\0' + remoteSecret);
 }
 
@@ -4640,10 +4801,10 @@ async function displayWallet() {
 		validityNotAfter = config.validityNotAfter;
 	}
 
-	if (isWeb() || IS_STANDALONE) {
+	if (isNeedDownloadButton()) {
 		downloadIcon.style.display = 'flex';
 		downloadIcon.addEventListener('click', (e) => {
-			const fileName = window.location.href.split('/').pop().split('#')[0].split('?')[0];
+			const fileName = WAS_EMPTY ? FILE_NAME : metaContainerUuidEl.getAttribute('content') + '.html';
 			downloadAsHtmlFile(fileName, DOC_CONTENT);
 	    });
 	} else
@@ -4733,8 +4894,7 @@ async function displayWallet() {
     	if (loggedIn) {
     		if (remoteOptions['event-sign-in-succes'] !== null)
     	    	await fetchLog(remoteOptions['event-sign-in-succes']['url'], remoteOptions['event-sign-in-succes']['options']);
-
-    	    if (remoteOptions['disable-user-profile'] === null)
+    		if (remoteOptions['disable-user-profile'] === null)
     	    	mnuBlock.classList.add('menu-item-disabled');
 
     		btnSignIn.style.display = 'none';
@@ -4775,9 +4935,33 @@ async function displayWallet() {
 		mnuCreateEmptyWallet.style.display = 'none';
 
 	mnuCreateWalletFromSource.addEventListener('click', e => {
-		getTheFile();
+		getXmlSourceFile();
 		menuLeft.style.display = 'none';
 	});
+
+	mnuVerifyWallet.addEventListener('click', e => {
+		getWalletFile();
+		menuLeft.style.display = 'none';
+	});
+
+	if (WAS_EMPTY)
+		mnuUpdate.style.display='none';
+	else {
+		mnuUpdate.style.display='block';
+		const updateUrl = config.remoteOptions['get-update']['url'];
+	  	const ok = await fetchUpdate(updateUrl, config.remoteOptions['get-update']['options']);
+	  	if (ok) {
+	  		mnuUpdate.classList.remove('menu-item-disabled');
+	  		mnuUpdate.removeAttribute('title');
+	  	} else {
+	  		mnuUpdate.classList.add('menu-item-disabled');
+	  		mnuUpdate.setAttribute('title', 'Update does not available');
+	  	}
+		if (ok)
+	  		mnuUpdate.addEventListener('click', (e)=> {
+				window.open(updateUrl, '_blank').focus();
+			});
+	}
 
 	mnuAbout.addEventListener('click', (e)=> {
 		logo.src = ICON_144X144_DATA_URL;
@@ -5016,6 +5200,7 @@ const ZERO_DOC_DESCRIPTION = 'Empty container';
 
 const headEl = document.querySelector('head');
 const metaSha256El = headEl.querySelector('meta[name="sha256"]');
+const metaPublicKeyEl = headEl.querySelector('meta[name="publicKey"]');
 const metaSignatureEl = headEl.querySelector('meta[name="signature"]');
 const metaContainerUuidEl = headEl.querySelector('meta[name="uuid"]');
 const metaEncryptedDataSizeEl = headEl.querySelector('meta[name="size"]');
@@ -5026,6 +5211,21 @@ const dialogsEls = document.querySelectorAll('dialog');
 
 const DOC_DIGEST = metaSha256El.getAttribute('content');
 const DOC_CONTENT = getHTML();
+
+/* Self integrity test */
+integrityVerificationTest(DOC_CONTENT,
+()=>{
+	console.log('INFO: Self integrity test passed');
+	integrityTestOkMessage.style.display = 'block';
+	integrityTestErrorMessage.style.display = 'none';
+	statusMessageMargin.style.display = 'block';
+},
+()=>{
+	console.log('WARNING: Self integrity test failed');
+	integrityTestOkMessage.style.display = 'none';
+	integrityTestErrorMessage.style.display = 'block';
+	statusMessageMargin.style.display = 'block';
+});
 
 //https://gist.github.com/serin113/3186244
 /*
@@ -5130,27 +5330,6 @@ document.addEventListener('keydown', e => {
 				statusMessageMargin.style.display = 'none';
 			}
 	}
-});
-
-/* Self integrity test */
-// save
-metaSha256El.setAttribute('content', '');
-digestMessage(getHTML()).then(digest => {
-	console.log(digest);
-	console.log(DOC_DIGEST);
-	if (digest != DOC_DIGEST) {
-		console.log('WARNING: Self integrity test failed');
-		integrityTestOkMessage.style.display = 'none';
-		integrityTestErrorMessage.style.display = 'block';
-	} else {
-		console.log('INFO: Self integrity test passed');
-		integrityTestOkMessage.style.display = 'block';
-		integrityTestErrorMessage.style.display = 'none';
-	}
-	statusMessageMargin.style.display = 'block';
-
-	//restore
-	metaSha256El.setAttribute('content', DOC_DIGEST);
 });
 
 if (location.origin.startsWith('https') || location.origin.startsWith('http'))
@@ -5283,7 +5462,7 @@ let validityNotBefore;
 let validityNotAfter;
 //
 let xmlFile;
-
+//
 let query = [];
 let remoteOptions = null;
 let loggedIn = false;
@@ -5294,9 +5473,9 @@ let resEntryJsonsPublic;
 let mapPublic;
 
 const ID_LENGTH = 12;
-const KEY_LENGTH = 18;
-const STANDARD_KEY = new Uint8Array(KEY_LENGTH);
+const KEY_LENGTH = ZERO_UUID.length;
 const uuid = metaContainerUuidEl.getAttribute('content');
+const STANDARD_KEY = new TextEncoder().encode(uuid); // key for public resources (non secret)
 const encryptedJsonStr = jsonHolder.textContent;
 const encryptedJson = JSON.parse(encryptedJsonStr);
 const config = encryptedJson['config'];
